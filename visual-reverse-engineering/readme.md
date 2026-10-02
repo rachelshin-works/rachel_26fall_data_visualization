@@ -14,6 +14,7 @@ As in the original, each row is a horizon chart: values are folded `bands` times
 
 ## Chart built:
 
+0. Modify original CSV file to 2018 march with panda
 1. Group the CSV by sensor ID and fill a `days × 24` array for the month.
 2. For each sensor, compute max, total, and weekend mean ÷ weekday mean.
 3. The x-axis is hour index; top ticks are calendar dates.
