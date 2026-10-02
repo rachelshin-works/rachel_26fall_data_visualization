@@ -11,3 +11,6 @@
 .prettierrc.json
 .prettierignore
 .prettierrc
+
+visual-reverse-engineering/data/Pedestrian_Counting_System_Monthly_counts_per_hour_may_2009_to_14_dec_2022.csv
+visual-reverse-engineering/data/.ipynb_checkpoints/Pedestrian_Counting_System_Monthly_counts_per_hour_may_2009_to_14_dec_2022-checkpoint.csv

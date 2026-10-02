@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A month in the life of Melbourne</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- <h1>A month in the life of Melbourne</h1>
+    <p class="sub">Hourly pedestrian counts at each sensor, March 2018</p> -->
+
+    <!-- interaction part -->
+    <div class="controls">
+      <div class="group" id="sort">
+        <span class="group-label">Sort by</span>
+        <button data-value="name" aria-pressed="true">Name</button>
+        <button data-value="total" aria-pressed="false">Busiest</button>
+        <button data-value="ratio" aria-pressed="false">
+          Weekend ÷ weekday
+        </button>
+      </div>
+      <div class="group" id="scale">
+        <span class="group-label">Scale</span>
+        <button data-value="own" aria-pressed="true">Each sensor</button>
+        <button data-value="shared" aria-pressed="false">Shared</button>
+      </div>
+      <div class="group" id="mode">
+        <span class="group-label">Show</span>
+        <button data-value="busy" aria-pressed="true">Busy hours</button>
+        <button data-value="quiet" aria-pressed="false">Quiet hours</button>
+      </div>
+      <div id="legend"></div>
+      <div id="description">
+        · reverse-engineered from:
+        <a href="https://morphocode.com/location-time-urban-data-visualization/"
+          >Morphocode</a
+        >
+      </div>
+      <div id="description">
+        · data source:
+        <a
+          href="https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-counting-system-monthly-counts-per-hour/information/"
+          >City of Melbourne</a
+        >
+      </div>
+    </div>
+
+    <div id="chart"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

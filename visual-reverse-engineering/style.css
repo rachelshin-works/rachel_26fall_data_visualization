@@ -1,0 +1,96 @@
+body {
+  margin: 20px;
+  background: #fff;
+  color: #777;
+  font-family: Helvetica, sans-serif;
+}
+h1 {
+  font-size: 20px;
+  /* font-weight: 600; */
+  margin: 0 0 4px;
+}
+.sub {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.group {
+  display: flex;
+  align-items: center;
+}
+.group-label {
+  font-size: 11px;
+  color: #777;
+  margin-right: 5px;
+}
+.group button {
+  font: inherit;
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #fff;
+  color: #777;
+  border: 1px solid #bbb;
+  margin-left: -1px;
+}
+.group button:first-of-type {
+  /* border-radius: 3px 0 0 3px; */
+  margin-left: 0;
+}
+/* .group button:last-of-type {
+  border-radius: 0 3px 3px 0;} */
+.group button[aria-pressed="true"] {
+  background: #777;
+  color: #fff;
+  border-color: #777;
+}
+
+#legend,
+#description {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+#description a {
+  color: inherit;
+}
+#legend .swatch {
+  width: 18px;
+  height: 10px;
+  display: inline-block;
+}
+
+.label {
+  font-size: 10px;
+  fill: #333;
+}
+.metric {
+  font-size: 10px;
+  fill: #666;
+}
+.axis text {
+  font-size: 10px;
+  fill: #666;
+}
+.axis path {
+  display: none;
+}
+.axis line {
+  stroke: #bbb;
+}
+.daygrid {
+  stroke: #fff;
+  stroke-opacity: 0.6;
+}
