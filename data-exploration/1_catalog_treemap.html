@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="viz.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 </head>
-<body class="split">
+<body class="split catalog">
 <main>
   <div class="card">
     <div class="viz-col">
@@ -27,8 +27,12 @@
 </main>
 <script src="viz-common.js"></script>
 <script>
-const W = 1120, H = 660;
 let data, focus = null;
+
+function chartSize() {
+  const el = document.querySelector("#chart");
+  return [Math.max(320, el.clientWidth), Math.max(240, el.clientHeight)];
+}
 
 d3.json("data/catalog_tree.json").then(d => {
   data = d;
@@ -41,9 +45,19 @@ d3.json("data/catalog_tree.json").then(d => {
   onThemeChange(draw);
 });
 
+window.addEventListener("resize", () => { if (data) draw(); });
+document.fonts.ready.then(() => { if (data) draw(); });
+new ResizeObserver(() => {
+  if (!data) return;
+  const [w, h] = chartSize();
+  const vb = document.querySelector("#chart svg")?.viewBox.baseVal;
+  if (vb && vb.width === w && vb.height === h) return;
+  draw();
+}).observe(document.querySelector("#chart"));
 d3.select("#back").on("click", () => { focus = null; draw(); });
 
 function draw() {
+  const [W, H] = chartSize();
   const node = focus || data;
   // Overview: departments with their sub-departments. Zoomed: one department, two levels down.
   const root = d3.hierarchy(node)
@@ -67,7 +81,7 @@ function draw() {
   d3.select("#back").attr("hidden", focus ? null : true);
   d3.select("#crumb").text(focus ? `${focus.name} · ${fmtInt(focus.count)} products · median ${fmtPrice(focus.median)}` : `${fmtInt(data.count)} products in ${data.children.length} departments`);
 
-  const svg = d3.select("#chart").html("").append("svg").attr("viewBox", [0, 0, W, H]).attr("preserveAspectRatio", "xMidYMin meet");
+  const svg = d3.select("#chart").html("").append("svg").attr("viewBox", [0, 0, W, H]).attr("preserveAspectRatio", "none");
   const hatch = addHatches(svg);
   const color = d3.scaleQuantize().domain(d3.extent(medians, Math.log)).range(hatch.seqAll());
   const fill = m => m ? color(Math.log(m)) : hatch.neutral();
