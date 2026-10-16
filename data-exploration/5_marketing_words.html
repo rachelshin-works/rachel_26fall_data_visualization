@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IKEA Marketing Language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="viz.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+<main>
+  <div class="card">
+    <div class="controls">
+      <span id="sorted">Departments sorted by size</span>
+      <button id="unsort" hidden>Reset order</button>
+      <span style="flex:1"></span>
+      <span class="legend" id="legend"></span>
+    </div>
+    <div id="chart"></div>
+    <details class="table-view"><summary>Table view</summary><div id="table"></div></details>
+  </div>
+</main>
+<script src="viz-common.js"></script>
+<script>
+let data, sortWord = null;
+d3.json("data/marketing_words.json").then(d => {
+  data = d;
+  tableView("#table",
+    [{ label: "Word", value: r => r.word }, { label: "Type", value: r => r.kind },
+     { label: "Share of all descriptions", num: true, value: r => r.overallPct + "%" }],
+    d.words);
+  draw();
+  onThemeChange(draw);
+});
+d3.select("#unsort").on("click", () => { sortWord = null; draw(); });
+
+function draw() {
+  const words = data.words.map(w => w.word);
+  const pct = new Map(data.cells.map(c => [c.category + "|" + c.word, c]));
+  let cats = data.categories.map(c => c.category);
+  if (sortWord) cats.sort((a, b) => pct.get(b + "|" + sortWord).pct - pct.get(a + "|" + sortWord).pct);
+  d3.select("#sorted").text(sortWord ? `Departments sorted by use of "${sortWord}"` : "Departments sorted by number of products");
+  d3.select("#unsort").attr("hidden", sortWord ? null : true);
+
+  const nShared = data.words.filter(w => w.kind === "shared").length;
+  const M = { t: 150, r: 16, b: 12, l: 380 }, gapX = 14;
+  const cell = Math.min(30, (1120 - M.l - M.r - gapX) / words.length);
+  const W = M.l + M.r + gapX + cell * words.length, H = M.t + M.b + cell * cats.length;
+  const xPos = i => M.l + i * cell + (i >= nShared ? gapX : 0);
+  const y = d3.scaleBand().domain(cats).range([M.t, H - M.b]);
+
+  const maxPct = d3.max(data.cells, c => c.pct);
+
+  const legend = d3.select("#legend").html("Share of descriptions ");
+  legend.append("span").text("0%");
+  appendRamp(legend);
+  legend.append("span").text(Math.round(maxPct) + "%");
+
+  const svg = d3.select("#chart").html("").append("svg").attr("viewBox", [0, 0, W, H]);
+  const color = d3.scaleQuantize().domain([0, maxPct]).range(addHatches(svg).seqAll());
+
+  // group headers
+  svg.append("text").attr("x", xPos(0)).attr("y", 16).style("fill", cssVar("--text-muted"))
+    .text("USED EVERYWHERE");
+  svg.append("text").attr("x", xPos(nShared)).attr("y", 16).style("fill", cssVar("--text-muted"))
+    .text("DISTINCTIVE TO ONE DEPARTMENT");
+
+  // column labels (rotated), clickable
+  svg.append("g").selectAll("text").data(words).join("text")
+    .attr("transform", (w, i) => `translate(${xPos(i) + cell / 2},${M.t - 6}) rotate(-50)`)
+    .style("fill", w => w === sortWord ? cssVar("--text-primary") : cssVar("--text-secondary"))
+    .style("cursor", "pointer")
+    .text(w => w)
+    .on("click", (e, w) => { sortWord = w; draw(); });
+
+  // row labels
+  svg.append("g").selectAll("text").data(cats).join("text")
+    .attr("x", M.l - 10).attr("y", c => y(c) + cell / 2).attr("dy", "0.35em").attr("text-anchor", "end")
+    .style("fill", cssVar("--text-primary")).text(c => c);
+
+  const nOf = new Map(data.categories.map(c => [c.category, c.n]));
+  const cellsG = svg.append("g");
+  cats.forEach(c => words.forEach((w, i) => {
+    const d = pct.get(c + "|" + w);
+    cellsG.append("rect")
+      .attr("x", xPos(i) + 1).attr("y", y(c) + 1).attr("width", cell - 2).attr("height", cell - 2)
+      .attr("fill", color(d.pct)).datum({ ...d, i })
+      .on("mousemove", e => {
+        cellsG.selectAll("rect").attr("opacity", r => r.category === c || r.word === w ? 1 : .55);
+        showTip(e, `<b>"${w}"</b> in ${c}<br>${d.pct}% of descriptions (${fmtInt(d.count)} of ${fmtInt(nOf.get(c))})`);
+      })
+      .on("mouseleave", () => { cellsG.selectAll("rect").attr("opacity", 1); hideTip(); });
+  }));
+}
+</script>
+</body>
+</html>

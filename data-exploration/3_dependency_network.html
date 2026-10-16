@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IKEA Dependency Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="viz.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  .link { fill: none; }
+  .node circle { stroke: var(--surface-1); stroke-width: 1.5px; cursor: grab; }
+  .node text { pointer-events: none; fill: var(--text-primary); paint-order: stroke; stroke: var(--surface-1); stroke-width: 3px; }
+  .lines svg { display: inline; width: 28px; vertical-align: middle; margin-right: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <div class="controls">
+      <label>Min. products per tie <input id="min" type="range" min="1" max="30" value="3"> <span id="minv">3</span></label>
+      <label>Highlight department <select id="cat"><option value="">All</option></select></label>
+      <label>Find <input id="find" type="search" placeholder="e.g. SKORVA" size="12"></label>
+      <button id="reset">Reset view</button>
+    </div>
+    <div class="legend" style="margin-bottom:8px">
+      <span><span class="sw" data-hatch="series-1"></span>Needs other lines</span>
+      <span><span class="sw" data-hatch="series-2"></span>Needed by other lines</span>
+      <span><span class="sw" data-hatch="series-3"></span>Both</span>
+      <span class="lines"><svg viewBox="0 0 28 6"><line x1="0" x2="28" y1="3" y2="3" stroke="var(--text-muted)" stroke-width="2"/></svg>sold separately</span>
+      <span class="lines"><svg viewBox="0 0 28 6"><line x1="0" x2="28" y1="3" y2="3" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="6 4"/></svg>included, packed separately</span>
+      <span class="lines"><svg viewBox="0 0 28 6"><line x1="0" x2="28" y1="3" y2="3" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="1.5 3"/></svg>other mention</span>
+    </div>
+    <div id="chart"></div>
+    <details class="table-view"><summary>Table view (most-needed product lines)</summary><div id="table"></div></details>
+  </div>
+</main>
+<script src="viz-common.js"></script>
+<script>
+const W = 1120, H = 720;
+let raw, sim;
+const ROLE_HATCH = { "needs others": 1, "needed by others": 2, "both": 3 };
+const DASH = { "sold separately": null, "included": "6 4", "mentioned": "1.5 3" };
+
+d3.json("data/dependency_network.json").then(d => {
+  raw = d;
+  const cats = [...new Set(d.nodes.map(n => n.category))].sort();
+  d3.select("#cat").selectAll("option.c").data(cats).join("option").attr("class", "c").attr("value", c => c).text(c => c);
+  tableView("#table",
+    [{ label: "Product line", value: r => r.id }, { label: "Department", value: r => r.category },
+     { label: "Lines pointing to it", num: true, value: r => r.in }, { label: "Products", num: true, value: r => fmtInt(r.products) }],
+    [...d.nodes].sort((a, b) => b.in - a.in).slice(0, 25));
+  draw();
+  onThemeChange(draw);
+});
+d3.select("#min").on("input", function () { d3.select("#minv").text(this.value); draw(); });
+d3.select("#cat").on("change", () => restyle());
+d3.select("#find").on("input", () => restyle());
+d3.select("#reset").on("click", draw);
+
+let nodeSel, linkSel, labelSel, nodes, links;
+
+function draw() {
+  if (sim) sim.stop();
+  const min = +d3.select("#min").property("value");
+  links = raw.links.filter(l => l.count >= min).map(l => ({ ...l }));
+  const used = new Set(links.flatMap(l => [l.source, l.target]));
+  nodes = raw.nodes.filter(n => used.has(n.id)).map(n => ({ ...n }));
+  // recompute degree for the filtered view
+  const inD = d3.rollup(links, v => v.length, l => l.target), outD = d3.rollup(links, v => v.length, l => l.source);
+  nodes.forEach(n => {
+    n.inF = inD.get(n.id) || 0; n.outF = outD.get(n.id) || 0;
+    n.roleF = n.inF && n.outF ? "both" : n.outF ? "needs others" : "needed by others";
+  });
+
+  const svg = d3.select("#chart").html("").append("svg").attr("viewBox", [0, 0, W, H]);
+  const hatch = addHatches(svg);
+  if (!nodes.length) { svg.append("text").attr("x", W / 2).attr("y", H / 2).attr("text-anchor", "middle").text("No ties at this threshold"); return; }
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "arrow").attr("viewBox", "0 -4 8 8").attr("refX", 8).attr("refY", 0)
+    .attr("markerUnits", "userSpaceOnUse").attr("markerWidth", 7).attr("markerHeight", 7).attr("orient", "auto")
+    .append("path").attr("d", "M0,-4L8,0L0,4").attr("fill", cssVar("--text-muted"));
+
+  const zoomG = svg.append("g");
+  svg.call(d3.zoom().scaleExtent([0.3, 6]).on("zoom", e => zoomG.attr("transform", e.transform)));
+
+  const r = d3.scaleSqrt().domain([1, d3.max(nodes, n => n.products)]).range([3, 16]);
+  const w = d3.scaleSqrt().domain([1, d3.max(links, l => l.count)]).range([0.8, 4]);
+
+  linkSel = zoomG.append("g").selectAll("line").data(links).join("line").attr("class", "link")
+    .attr("stroke", cssVar("--text-muted")).attr("stroke-opacity", .45)
+    .attr("stroke-width", l => w(l.count)).attr("stroke-dasharray", l => DASH[l.type])
+    .attr("marker-end", "url(#arrow)");
+
+  nodeSel = zoomG.append("g").selectAll("g").data(nodes, d => d.id).join("g").attr("class", "node")
+    .call(d3.drag()
+      .on("start", (e, d) => { if (!e.active) sim.alphaTarget(.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on("drag", (e, d) => { d.fx = e.x; d.fy = e.y; })
+      .on("end", (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }))
+    .on("mousemove", (e, d) => { focusNode(d); showTip(e, tipHtml(d)); })
+    .on("mouseleave", () => { focusNode(null); hideTip(); });
+  nodeSel.append("circle").attr("r", d => r(d.products)).attr("fill", d => hatch.series(ROLE_HATCH[d.roleF]));
+
+  const labelled = new Set([...nodes].sort((a, b) => b.inF - a.inF || b.products - a.products).slice(0, 18).map(n => n.id));
+  labelSel = nodeSel.append("text").attr("dy", d => -r(d.products) - 3).attr("text-anchor", "middle")
+    .text(d => d.id).style("display", d => labelled.has(d.id) ? null : "none");
+
+  sim = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => d.id).distance(60).strength(.25))
+    .force("charge", d3.forceManyBody().strength(-160))
+    .force("collide", d3.forceCollide(d => r(d.products) + 2))
+    .force("x", d3.forceX(W / 2).strength(.05)).force("y", d3.forceY(H / 2).strength(.07))
+    .on("tick", () => {
+      linkSel.each(function (l) {
+        // stop the arrow at the target circle's edge
+        const dx = l.target.x - l.source.x, dy = l.target.y - l.source.y, len = Math.hypot(dx, dy) || 1;
+        const tr = r(l.target.products) + 2;
+        d3.select(this).attr("x1", l.source.x).attr("y1", l.source.y)
+          .attr("x2", l.target.x - dx / len * tr).attr("y2", l.target.y - dy / len * tr);
+      });
+      nodeSel.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+  restyle();
+}
+
+function tipHtml(d) {
+  const needs = links.filter(l => l.source.id === d.id).sort((a, b) => b.count - a.count).slice(0, 5).map(l => `${l.target.id} (${l.count}, ${l.type})`);
+  const by = links.filter(l => l.target.id === d.id).sort((a, b) => b.count - a.count).slice(0, 5).map(l => `${l.source.id} (${l.count})`);
+  return `<b>${d.id}</b> <span class="muted">${d.category}</span><br>
+    ${fmtInt(d.products)} products · median ${fmtPrice(d.median)}
+    ${needs.length ? `<br><b>Names:</b> ${needs.join(", ")}` : ""}
+    ${by.length ? `<br><b>Named by:</b> ${by.join(", ")}` : ""}`;
+}
+
+function focusNode(d) {
+  if (!d) { restyle(); return; }
+  const near = new Set([d.id]);
+  links.forEach(l => { if (l.source.id === d.id) near.add(l.target.id); if (l.target.id === d.id) near.add(l.source.id); });
+  nodeSel.style("opacity", n => near.has(n.id) ? 1 : .15);
+  labelSel.style("display", n => near.has(n.id) ? null : "none");
+  linkSel.attr("stroke-opacity", l => l.source.id === d.id || l.target.id === d.id ? .9 : .05);
+}
+
+function restyle() {
+  if (!nodeSel) return;
+  const cat = d3.select("#cat").property("value");
+  const q = d3.select("#find").property("value").trim().toUpperCase();
+  const on = n => (!cat || n.category === cat) && (!q || n.id.includes(q));
+  const active = !!(cat || q);
+  const labelled = new Set([...nodes].sort((a, b) => b.inF - a.inF || b.products - a.products).slice(0, 18).map(n => n.id));
+  nodeSel.style("opacity", n => !active || on(n) ? 1 : .15);
+  labelSel.style("display", n => (active ? on(n) : labelled.has(n.id)) ? null : "none");
+  linkSel.attr("stroke-opacity", l => !active ? .45 : (on(l.source) || on(l.target)) ? .8 : .05);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IKEA Parts and Materials</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="viz.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+</head>
+<body>
+<main>
+  <div class="card">
+    <div class="controls">
+      <span class="legend">
+        <span><span class="sw" data-hatch="series-1"></span>Component</span>
+        <span><span class="sw" data-hatch="series-2"></span>Material</span>
+      </span>
+      <span style="flex:1"></span>
+      <label>Min. products per band <input id="min" type="range" min="5" max="200" step="5" value="20"> <span id="minv">20</span></label>
+    </div>
+    <div id="chart"></div>
+    <details class="table-view"><summary>Table view (strongest pairs)</summary><div id="table"></div></details>
+  </div>
+</main>
+<script src="viz-common.js"></script>
+<script>
+const W = 1120, H = 680, M = { l: 150, r: 190, t: 10, b: 10 };
+let raw;
+
+d3.json("data/parts_materials.json").then(d => {
+  raw = d;
+  tableView("#table",
+    [{ label: "Component", value: r => r.source }, { label: "Material", value: r => r.target },
+     { label: "Products", num: true, value: r => fmtInt(r.value) }],
+    [...d.links].sort((a, b) => b.value - a.value).slice(0, 30));
+  const max = d3.max(d.links, l => l.value) || 200;
+  d3.select("#min").attr("max", Math.max(10, Math.round(max / 2 / 5) * 5));
+  draw();
+  onThemeChange(draw);
+});
+d3.select("#min").on("input", function () { d3.select("#minv").text(this.value); draw(); });
+
+function draw() {
+  const min = +d3.select("#min").property("value");
+  const links = raw.links.filter(l => l.value >= min).map(l => ({ ...l }));
+  const used = new Set(links.flatMap(l => [l.source, l.target]));
+  const nodes = raw.nodes.filter(n => used.has(n.id)).map(n => ({ ...n }));
+
+  const svg = d3.select("#chart").html("").append("svg").attr("viewBox", [0, 0, W, H]);
+  const hatch = addHatches(svg);
+  if (!links.length) { svg.append("text").attr("x", W / 2).attr("y", H / 2).attr("text-anchor", "middle").text("No pairs above this threshold"); return; }
+
+  const sankey = d3.sankey().nodeId(d => d.id).nodeWidth(10).nodePadding(10)
+    .nodeSort((a, b) => b.value - a.value)
+    .extent([[M.l, M.t], [W - M.r, H - M.b]]);
+  const g = sankey({ nodes, links });
+
+  const colorOf = n => n.side === "part" ? hatch.series(1) : hatch.series(2);
+  const toneOf = n => n.side === "part" ? "#3a3a3a" : "#6a6a6a";
+
+  const link = svg.append("g").attr("fill", "none").selectAll("path").data(g.links).join("path")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", "#c8c8c8").attr("stroke-opacity", .55)
+    .attr("stroke-width", d => Math.max(1, d.width))
+    .on("mousemove", (e, d) => { highlight(new Set([d])); showTip(e, `<b>${cap(d.source.id)} → ${d.target.id}</b><br>${fmtInt(d.value)} products`); })
+    .on("mouseleave", () => { highlight(null); hideTip(); });
+
+  const node = svg.append("g").selectAll("g").data(g.nodes).join("g")
+    .on("mousemove", (e, d) => {
+      highlight(new Set([...d.sourceLinks, ...d.targetLinks]));
+      const top = [...d.sourceLinks.map(l => [l.target.id, l.value]), ...d.targetLinks.map(l => [cap(l.source.id), l.value])]
+        .sort((a, b) => b[1] - a[1]).slice(0, 4).map(([n, v]) => `${n} (${fmtInt(v)})`).join("<br>");
+      showTip(e, `<b>${cap(d.id)}</b> <span class="muted">${d.side === "part" ? "component" : "material"}</span><br>${top}`);
+    })
+    .on("mouseleave", () => { highlight(null); hideTip(); });
+  node.append("rect").attr("x", d => d.x0).attr("y", d => d.y0)
+    .attr("width", d => d.x1 - d.x0).attr("height", d => Math.max(1, d.y1 - d.y0))
+    .attr("fill", colorOf);
+  node.append("text")
+    .attr("x", d => d.side === "part" ? d.x0 - 8 : d.x1 + 8)
+    .attr("y", d => (d.y0 + d.y1) / 2).attr("dy", "0.35em")
+    .attr("text-anchor", d => d.side === "part" ? "end" : "start")
+    .style("fill", cssVar("--text-primary"))
+    .text(d => d.side === "part" ? cap(d.id) : d.id);
+
+  function highlight(set) {
+    link.attr("stroke", d => set && set.has(d) ? toneOf(set.size === 1 ? d.source : (setOwner(set))) : "#c8c8c8")
+      .attr("stroke-opacity", d => !set ? .45 : set.has(d) ? .8 : .12);
+  }
+  // When hovering a node, color its links by that node's side.
+  function setOwner(set) {
+    const arr = [...set];
+    const s = arr[0].source, t = arr[0].target;
+    return arr.every(l => l.source === s) ? s : t;
+  }
+}
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+</script>
+</body>
+</html>

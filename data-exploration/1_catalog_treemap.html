@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How IKEA Classifies the Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="viz.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body class="split">
+<main>
+  <div class="card">
+    <div class="viz-col">
+      <div class="controls">
+        <button id="back" hidden>← All departments</button>
+        <span id="crumb"></span>
+        <span style="flex:1"></span>
+        <span class="legend" id="legend"></span>
+      </div>
+      <div id="chart"></div>
+    </div>
+    <aside class="table-view" id="table"></aside>
+  </div>
+</main>
+<script src="viz-common.js"></script>
+<script>
+const W = 1120, H = 660;
+let data, focus = null;
+
+d3.json("data/catalog_tree.json").then(d => {
+  data = d;
+  tableView("#table",
+    [{ label: "Department", value: r => r.name },
+     { label: "Products", num: true, value: r => fmtInt(r.count) },
+     { label: "Median price", num: true, value: r => fmtPrice(r.median) }],
+    [...d.children].sort((a, b) => b.count - a.count));
+  draw();
+  onThemeChange(draw);
+});
+
+d3.select("#back").on("click", () => { focus = null; draw(); });
+
+function draw() {
+  const node = focus || data;
+  // Overview: departments with their sub-departments. Zoomed: one department, two levels down.
+  const root = d3.hierarchy(node)
+    .sum(d => d.children ? 0 : d.value)
+    .sort((a, b) => b.value - a.value);
+  // Cut the tree to 2 visible levels so rectangles stay legible.
+  root.each(n => { if (n.depth >= 2) n.children = null; });
+  root.eachAfter(n => { n.value = n.children ? d3.sum(n.children, c => c.value) : n.data.count; });
+
+  d3.treemap().size([W, H]).paddingOuter(3).paddingTop(36).paddingInner(2).round(true)(root);
+
+  // Color: median price on a log scale, 7 sequential steps from the global spread of medians.
+  const medians = [];
+  data.children.forEach(function walk(n) { if (n.median) medians.push(n.median); (n.children || []).forEach(walk); });
+  const legend = d3.select("#legend").html("Median price ");
+  const ext = d3.extent(medians);
+  legend.append("span").text(fmtPrice(ext[0]));
+  appendRamp(legend);
+  legend.append("span").text(fmtPrice(ext[1]));
+
+  d3.select("#back").attr("hidden", focus ? null : true);
+  d3.select("#crumb").text(focus ? `${focus.name} · ${fmtInt(focus.count)} products · median ${fmtPrice(focus.median)}` : `${fmtInt(data.count)} products in ${data.children.length} departments`);
+
+  const svg = d3.select("#chart").html("").append("svg").attr("viewBox", [0, 0, W, H]).attr("preserveAspectRatio", "xMidYMin meet");
+  const hatch = addHatches(svg);
+  const color = d3.scaleQuantize().domain(d3.extent(medians, Math.log)).range(hatch.seqAll());
+  const fill = m => m ? color(Math.log(m)) : hatch.neutral();
+
+  // Group frames (depth 1) with labels.
+  const groups = svg.selectAll("g.group").data(root.children || []).join("g").attr("class", "group");
+  groups.append("rect")
+    .attr("x", d => d.x0).attr("y", d => d.y0)
+    .attr("width", d => d.x1 - d.x0).attr("height", d => d.y1 - d.y0)
+    .attr("fill", cssVar("--surface-0")).attr("stroke", cssVar("--rule"))
+    .style("cursor", focus ? "default" : "pointer")
+    .on("click", (e, d) => { if (!focus && d.data.children) { focus = d.data; draw(); } });
+  groups.append("text")
+    .attr("x", d => d.x0 + 6).attr("y", d => d.y0 + 24)
+    .style("fill", cssVar("--text-primary"))
+    .text(d => d.data.name).each(function (d) { clip(this, d.x1 - d.x0 - 10); });
+
+  // Cells (depth 2, or depth 1 if a group has no children).
+  const cells = root.leaves().filter(d => d.depth >= 1);
+  const cell = svg.selectAll("g.cell").data(cells).join("g").attr("class", "cell")
+    .attr("transform", d => `translate(${d.x0},${d.y0})`)
+    .style("cursor", focus ? "default" : "pointer")
+    .on("click", (e, d) => { if (!focus) { const g = d.ancestors().find(a => a.depth === 1); if (g?.data.children) { focus = g.data; draw(); } } })
+    .on("mousemove", (e, d) => {
+      const ex = (d.data.examples || []).slice(0, 3);
+      showTip(e, `<b>${d.ancestors().reverse().slice(1).map(a => a.data.name).join(" › ")}</b><br>
+        ${fmtInt(d.value)} products · median ${fmtPrice(d.data.median)}
+        ${ex.length ? `<br><span class="muted">e.g. ${ex.join("; ")}</span>` : ""}`);
+    })
+    .on("mouseleave", hideTip);
+
+  cell.append("rect")
+    .attr("width", d => Math.max(0, d.x1 - d.x0)).attr("height", d => Math.max(0, d.y1 - d.y0))
+    .attr("fill", d => fill(d.data.median));
+  cell.filter(d => d.x1 - d.x0 > 80 && d.y1 - d.y0 > 42).append("text")
+    .attr("x", 6).attr("y", 22)
+    .style("fill", d => textOn(fill(d.data.median)))
+    .text(d => d.data.name).each(function (d) { clip(this, d.x1 - d.x0 - 10); });
+  cell.filter(d => d.x1 - d.x0 > 80 && d.y1 - d.y0 > 64).append("text")
+    .attr("x", 6).attr("y", 42)
+    .style("fill", d => textOn(fill(d.data.median))).style("opacity", .85)
+    .text(d => `${fmtInt(d.value)} · ${fmtPrice(d.data.median)}`);
+}
+
+// Truncate an SVG text element to a pixel width.
+function clip(el, maxW) {
+  let s = el.textContent;
+  while (s.length > 1 && el.getComputedTextLength() > maxW) { s = s.slice(0, -1); el.textContent = s + "…"; }
+  if (maxW < 12) el.textContent = "";
+}
+</script>
+</body>
+</html>

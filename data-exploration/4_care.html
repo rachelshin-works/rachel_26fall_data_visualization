@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Much Care Objects Ask For</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="viz.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  .panels { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap: 24px; flex: 1; min-height: 0; }
+  .panels > div { display: flex; flex-direction: column; min-height: 0; }
+  @media (max-width: 800px) { .panels { grid-template-columns: 1fr; } }
+  h2 { margin: 0 0 4px; }
+  .panel-sub { color: var(--text-muted); margin: 0 0 8px; }
+</style>
+</head>
+<body class="split">
+<main>
+  <div class="card">
+    <div class="panels">
+      <div>
+        <h2>Care instructions per product, by department</h2>
+        <p class="panel-sub">Circle area = share of the department's products with that many instructions. Bar = median. Sorted by average.</p>
+        <div id="dist"></div>
+      </div>
+      <div>
+        <h2>The language of care</h2>
+        <p class="panel-sub">Most common opening verbs across all instructions</p>
+        <div id="verbs"></div>
+      </div>
+    </div>
+    <aside class="table-view wide" id="table"></aside>
+  </div>
+</main>
+<script src="viz-common.js"></script>
+<script>
+let data;
+d3.json("data/care.json").then(d => {
+  data = d;
+  tableView("#table",
+    [{ label: "Department", value: r => r.category }, { label: "Products", num: true, value: r => fmtInt(r.n) },
+     { label: "Mean steps", num: true, value: r => r.mean.toFixed(1) }, { label: "Median steps", num: true, value: r => r.median },
+     { label: "No instructions", num: true, value: r => d3.format(".0%")(r.none / r.n) }],
+    d.categories);
+  draw();
+  onThemeChange(draw);
+});
+
+function draw() {
+  drawDist(); drawVerbs();
+}
+
+function drawDist() {
+  const cats = data.categories, max = data.maxSteps;
+  const M = { t: 28, r: 16, b: 48, l: 430 }, rowH = 36;
+  const W = 760, H = M.t + M.b + rowH * cats.length;
+  const x = d3.scaleLinear().domain([0, max]).range([M.l + 20, W - M.r]);
+  const y = d3.scaleBand().domain(cats.map(c => c.category)).range([M.t, H - M.b]).padding(0);
+  const maxShare = d3.max(cats, c => d3.max(c.dist, b => b.count / c.n));
+  const rad = d3.scaleSqrt().domain([0, maxShare]).range([0, Math.min(rowH, x(1) - x(0)) / 2 - 1]);
+
+  const svg = d3.select("#dist").html("").append("svg").attr("viewBox", [0, 0, W, H]).attr("preserveAspectRatio", "xMidYMin meet");
+  const hatch = addHatches(svg);
+  svg.append("g").attr("class", "gridline").selectAll("line").data(d3.range(0, max + 1)).join("line")
+    .attr("x1", x).attr("x2", x).attr("y1", M.t).attr("y2", H - M.b);
+  svg.append("g").attr("class", "axis").attr("transform", `translate(0,${H - M.b})`)
+    .call(d3.axisBottom(x).ticks(max).tickFormat(v => v === max ? `${max}+` : v).tickSizeOuter(0));
+  svg.append("text").attr("x", x(max / 2)).attr("y", H - 4).attr("text-anchor", "middle")
+    .style("fill", cssVar("--text-muted")).text("Number of care instructions on the product page");
+
+  const row = svg.selectAll("g.row").data(cats).join("g").attr("class", "row")
+    .attr("transform", c => `translate(0,${y(c.category) + y.bandwidth() / 2})`);
+  row.append("text").attr("x", M.l - 12).attr("dy", "0.35em").attr("text-anchor", "end")
+    .style("fill", cssVar("--text-primary")).text(c => c.category);
+  row.append("line").attr("x1", M.l).attr("x2", W - M.r).attr("stroke", cssVar("--grid"));
+  row.selectAll("circle").data(c => c.dist.map(b => ({ ...b, c }))).join("circle")
+    .attr("cx", b => x(b.steps)).attr("r", b => Math.max(1.5, rad(b.count / b.c.n)))
+    .attr("fill", hatch.series(1))
+    .attr("stroke", cssVar("--surface-1")).attr("stroke-width", 1)
+    .on("mousemove", (e, b) => showTip(e, `<b>${b.c.category}</b><br>${b.steps === max ? max + "+" : b.steps} instruction${b.steps === 1 ? "" : "s"}: ${fmtInt(b.count)} products (${d3.format(".0%")(b.count / b.c.n)})`))
+    .on("mouseleave", hideTip);
+  row.append("line").attr("x1", c => x(c.median)).attr("x2", c => x(c.median))
+    .attr("y1", -y.bandwidth() / 2 + 3).attr("y2", y.bandwidth() / 2 - 3)
+    .attr("stroke", cssVar("--text-primary")).attr("stroke-width", 2).attr("stroke-linecap", "round")
+    .on("mousemove", (e, c) => showTip(e, `<b>${c.category}</b><br>median ${c.median} · mean ${c.mean.toFixed(1)}<br>${d3.format(".0%")(c.none / c.n)} have no instructions`))
+    .on("mouseleave", hideTip);
+}
+
+function drawVerbs() {
+  const verbs = data.verbs.slice(0, 15);
+  const M = { t: 4, r: 72, b: 8, l: 170 }, barH = 26, gap = 8;
+  const W = 340, H = M.t + M.b + verbs.length * (barH + gap);
+  const x = d3.scaleLinear().domain([0, d3.max(verbs, v => v.count)]).range([M.l, W - M.r]);
+  const svg = d3.select("#verbs").html("").append("svg").attr("viewBox", [0, 0, W, H]).attr("preserveAspectRatio", "xMidYMin meet");
+  const hatch = addHatches(svg);
+  const g = svg.selectAll("g").data(verbs).join("g").attr("transform", (v, i) => `translate(0,${M.t + i * (barH + gap)})`)
+    .on("mousemove", (e, v) => showTip(e, `<b>"${v.verb} …"</b><br>${fmtInt(v.count)} instructions`))
+    .on("mouseleave", hideTip);
+  g.append("rect").attr("x", M.l).attr("width", W - M.r - M.l).attr("height", barH).attr("fill", "transparent");
+  g.append("text").attr("x", M.l - 8).attr("y", barH / 2).attr("dy", "0.35em").attr("text-anchor", "end")
+    .style("fill", cssVar("--text-primary")).text(v => v.verb);
+  g.append("path").attr("fill", hatch.series(1))
+    .attr("d", v => roundRight(M.l, 0, x(v.count) - M.l, barH, 0));
+  g.append("text").attr("x", v => x(v.count) + 6).attr("y", barH / 2).attr("dy", "0.35em")
+    .style("fill", cssVar("--text-secondary")).text(v => fmtInt(v.count));
+}
+
+// Bar with rounded data-end only (anchored square to the baseline).
+function roundRight(x, y, w, h, r) {
+  r = Math.min(r, w, h / 2);
+  return `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`;
+}
+</script>
+</body>
+</html>
