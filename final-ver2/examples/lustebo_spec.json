@@ -1,0 +1,15 @@
+{
+  "product": "LUSTEBO chair",
+  "source": "IKEA US product page, dimension drawing (accessed Oct 2026)",
+  "dimensions": [
+    {"label": "Width",           "spec_cm": 55, "spec_in": "21 ⅝\"", "measure": "size", "axis": "x"},
+    {"label": "Depth",           "spec_cm": 56, "spec_in": "22\"",   "measure": "size", "axis": "z"},
+    {"label": "Height",          "spec_cm": 85, "spec_in": "33 ½\"", "measure": "size", "axis": "y", "label_t": 0.25},
+    {"label": "Seat height",     "spec_cm": 46, "spec_in": "18 ⅛\"", "measure": "top",  "parts": ["Panel horizontal", "Rail front"]},
+    {"label": "Seat width",      "spec_cm": 48, "spec_in": "18 ⅞\"", "measure": "size", "axis": "x", "parts": ["Panel horizontal", "Rail front"]},
+    {"label": "Seat depth",      "spec_cm": 41, "spec_in": "16 ⅛\"", "measure": "size", "axis": "z", "parts": ["Panel horizontal", "Rail front"]},
+    {"label": "Backrest height", "spec_cm": 38, "spec_in": "15\"",   "measure": "between",
+       "from": {"parts": ["Panel horizontal", "Rail front"], "edge": "top"}, "to": {"edge": "top"}},
+    {"label": "Backrest width",  "spec_cm": 40, "spec_in": "15 ¾\"", "measure": "width_at", "above_cm": 80}
+  ]
+}

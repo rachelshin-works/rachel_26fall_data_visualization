@@ -1,0 +1,9 @@
+{
+  "product": "SKOGSTA chair",
+  "source": "Seat sizes from the SKOGSTA (505.448.67) product listing. Add overall width/depth/height from the IKEA product page.",
+  "dimensions": [
+    {"label": "Seat width",  "spec_cm": 44, "measure": "size", "axis": "x", "parts": "Seat"},
+    {"label": "Seat depth",  "spec_cm": 39, "measure": "size", "axis": "z", "parts": "Seat"},
+    {"label": "Seat height", "spec_cm": 46, "measure": "top",  "parts": "Seat"}
+  ]
+}

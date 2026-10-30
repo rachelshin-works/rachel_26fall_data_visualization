@@ -1,0 +1,498 @@
+{
+ "source": "50544867-mini.glb",
+ "parts": [
+  {
+   "part_id": "P01",
+   "part": "Seat",
+   "group": "Seat",
+   "auto_name": "Panel horizontal front",
+   "triangles": 1818,
+   "size_cm": [
+    43.2,
+    5.4,
+    42.8
+   ],
+   "center_cm": [
+    -0.0,
+    43.7,
+    5.6
+   ]
+  },
+  {
+   "part_id": "P02",
+   "part": "Back bow",
+   "group": "Backrest",
+   "auto_name": "Panel vertical back",
+   "triangles": 1388,
+   "size_cm": [
+    43.2,
+    53.2,
+    25.3
+   ],
+   "center_cm": [
+    0.0,
+    67.7,
+    -14.3
+   ]
+  },
+  {
+   "part_id": "P03",
+   "part": "Leg back right",
+   "group": "Base",
+   "auto_name": "Leg back right",
+   "triangles": 248,
+   "size_cm": [
+    11.2,
+    41.3,
+    8.7
+   ],
+   "center_cm": [
+    16.2,
+    20.7,
+    -12.3
+   ]
+  },
+  {
+   "part_id": "P04",
+   "part": "Leg front right",
+   "group": "Base",
+   "auto_name": "Leg front right",
+   "triangles": 246,
+   "size_cm": [
+    12.6,
+    43.1,
+    11.6
+   ],
+   "center_cm": [
+    16.9,
+    21.6,
+    20.8
+   ]
+  },
+  {
+   "part_id": "P05",
+   "part": "Leg front left",
+   "group": "Base",
+   "auto_name": "Leg front left",
+   "triangles": 242,
+   "size_cm": [
+    12.6,
+    43.1,
+    11.6
+   ],
+   "center_cm": [
+    -16.9,
+    21.6,
+    20.9
+   ]
+  },
+  {
+   "part_id": "P06",
+   "part": "Leg back left",
+   "group": "Base",
+   "auto_name": "Leg back left",
+   "triangles": 240,
+   "size_cm": [
+    11.2,
+    41.3,
+    8.7
+   ],
+   "center_cm": [
+    -16.2,
+    20.7,
+    -12.3
+   ]
+  },
+  {
+   "part_id": "P07",
+   "part": "Spindle 6",
+   "group": "Backrest",
+   "auto_name": "Post back right 1",
+   "triangles": 38,
+   "size_cm": [
+    5.6,
+    45.0,
+    13.4
+   ],
+   "center_cm": [
+    13.9,
+    64.4,
+    -16.3
+   ]
+  },
+  {
+   "part_id": "P08",
+   "part": "Spindle 1",
+   "group": "Backrest",
+   "auto_name": "Post back left 1",
+   "triangles": 38,
+   "size_cm": [
+    5.6,
+    44.9,
+    13.4
+   ],
+   "center_cm": [
+    -13.9,
+    64.4,
+    -16.3
+   ]
+  },
+  {
+   "part_id": "P09",
+   "part": "Spindle 5",
+   "group": "Backrest",
+   "auto_name": "Post back right 2",
+   "triangles": 36,
+   "size_cm": [
+    3.8,
+    49.0,
+    13.7
+   ],
+   "center_cm": [
+    8.3,
+    66.3,
+    -17.9
+   ]
+  },
+  {
+   "part_id": "P10",
+   "part": "Spindle 2",
+   "group": "Backrest",
+   "auto_name": "Post back left 2",
+   "triangles": 36,
+   "size_cm": [
+    3.8,
+    49.0,
+    13.7
+   ],
+   "center_cm": [
+    -8.3,
+    66.3,
+    -17.9
+   ]
+  },
+  {
+   "part_id": "P11",
+   "part": "Spindle 3",
+   "group": "Backrest",
+   "auto_name": "Post back 1",
+   "triangles": 32,
+   "size_cm": [
+    2.4,
+    50.9,
+    14.0
+   ],
+   "center_cm": [
+    2.8,
+    67.2,
+    -18.8
+   ]
+  },
+  {
+   "part_id": "P12",
+   "part": "Spindle 4",
+   "group": "Backrest",
+   "auto_name": "Post back 2",
+   "triangles": 32,
+   "size_cm": [
+    2.4,
+    50.9,
+    14.0
+   ],
+   "center_cm": [
+    -2.8,
+    67.2,
+    -18.8
+   ]
+  },
+  {
+   "part_id": "P13",
+   "part": "Seat rail left",
+   "group": "Base",
+   "auto_name": "Rail left 1",
+   "triangles": 496,
+   "size_cm": [
+    4.5,
+    4.6,
+    31.1
+   ],
+   "center_cm": [
+    -12.3,
+    41.2,
+    3.7
+   ]
+  },
+  {
+   "part_id": "P14",
+   "part": "Seat rail right",
+   "group": "Base",
+   "auto_name": "Rail right 1",
+   "triangles": 488,
+   "size_cm": [
+    4.5,
+    4.6,
+    31.1
+   ],
+   "center_cm": [
+    12.3,
+    41.2,
+    3.7
+   ]
+  },
+  {
+   "part_id": "P15",
+   "part": "Cross stretcher",
+   "group": "Base",
+   "auto_name": "Rail",
+   "triangles": 404,
+   "size_cm": [
+    34.0,
+    2.5,
+    2.6
+   ],
+   "center_cm": [
+    0.0,
+    17.4,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P16",
+   "part": "Side stretcher left",
+   "group": "Base",
+   "auto_name": "Rail left 2",
+   "triangles": 318,
+   "size_cm": [
+    3.2,
+    2.5,
+    33.6
+   ],
+   "center_cm": [
+    -17.2,
+    17.3,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P17",
+   "part": "Side stretcher right",
+   "group": "Base",
+   "auto_name": "Rail right 2",
+   "triangles": 304,
+   "size_cm": [
+    3.2,
+    2.5,
+    33.6
+   ],
+   "center_cm": [
+    17.2,
+    17.3,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P18",
+   "part": "Stretcher bolt 1",
+   "group": "Hardware",
+   "auto_name": "Bolt/screw 1",
+   "triangles": 450,
+   "size_cm": [
+    5.2,
+    1.2,
+    1.2
+   ],
+   "center_cm": [
+    -15.6,
+    17.3,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P19",
+   "part": "Stretcher bolt 2",
+   "group": "Hardware",
+   "auto_name": "Bolt/screw 2",
+   "triangles": 424,
+   "size_cm": [
+    5.2,
+    1.2,
+    1.2
+   ],
+   "center_cm": [
+    15.6,
+    17.3,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P20",
+   "part": "Bolt nut 1",
+   "group": "Hardware",
+   "auto_name": "Nut/fitting 1",
+   "triangles": 128,
+   "size_cm": [
+    1.0,
+    1.5,
+    1.1
+   ],
+   "center_cm": [
+    -14.5,
+    17.1,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P21",
+   "part": "Bolt nut 2",
+   "group": "Hardware",
+   "auto_name": "Nut/fitting 2",
+   "triangles": 120,
+   "size_cm": [
+    1.0,
+    1.4,
+    1.0
+   ],
+   "center_cm": [
+    14.5,
+    17.1,
+    4.3
+   ]
+  },
+  {
+   "part_id": "P22",
+   "part": "Seat screw 1",
+   "group": "Hardware",
+   "auto_name": "Screw head/washer 1",
+   "triangles": 84,
+   "size_cm": [
+    1.2,
+    0.4,
+    1.2
+   ],
+   "center_cm": [
+    -13.2,
+    39.4,
+    -5.8
+   ]
+  },
+  {
+   "part_id": "P23",
+   "part": "Seat screw 2",
+   "group": "Hardware",
+   "auto_name": "Screw head/washer 2",
+   "triangles": 82,
+   "size_cm": [
+    1.2,
+    0.4,
+    1.2
+   ],
+   "center_cm": [
+    13.3,
+    39.4,
+    -5.8
+   ]
+  },
+  {
+   "part_id": "P24",
+   "part": "Seat screw 3",
+   "group": "Hardware",
+   "auto_name": "Screw head/washer 3",
+   "triangles": 80,
+   "size_cm": [
+    1.2,
+    0.4,
+    1.2
+   ],
+   "center_cm": [
+    -13.3,
+    40.7,
+    13.4
+   ]
+  },
+  {
+   "part_id": "P25",
+   "part": "Seat screw 4",
+   "group": "Hardware",
+   "auto_name": "Screw head/washer 4",
+   "triangles": 80,
+   "size_cm": [
+    1.2,
+    0.4,
+    1.2
+   ],
+   "center_cm": [
+    13.3,
+    40.7,
+    13.3
+   ]
+  },
+  {
+   "part_id": "P26",
+   "part": "Seat screw 5",
+   "group": "Hardware",
+   "auto_name": "Screw head/washer 5",
+   "triangles": 80,
+   "size_cm": [
+    1.2,
+    0.4,
+    1.2
+   ],
+   "center_cm": [
+    -11.2,
+    40.2,
+    5.8
+   ]
+  },
+  {
+   "part_id": "P27",
+   "part": "Seat screw 6",
+   "group": "Hardware",
+   "auto_name": "Screw head/washer 6",
+   "triangles": 76,
+   "size_cm": [
+    1.2,
+    0.4,
+    1.2
+   ],
+   "center_cm": [
+    11.3,
+    40.2,
+    5.8
+   ]
+  },
+  {
+   "part_id": "P28",
+   "part": "Pin 1",
+   "group": "Hardware",
+   "auto_name": "Nut/fitting 3",
+   "triangles": 62,
+   "size_cm": [
+    0.8,
+    0.7,
+    0.5
+   ],
+   "center_cm": [
+    16.5,
+    42.2,
+    -4.3
+   ]
+  },
+  {
+   "part_id": "P29",
+   "part": "Pin 2",
+   "group": "Hardware",
+   "auto_name": "Nut/fitting 4",
+   "triangles": 60,
+   "size_cm": [
+    0.8,
+    0.7,
+    0.5
+   ],
+   "center_cm": [
+    -16.5,
+    42.2,
+    -4.3
+   ]
+  }
+ ]
+}

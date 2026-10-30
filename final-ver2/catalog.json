@@ -1,0 +1,2024 @@
+{
+ "generated": "2026-10-27 22:49",
+ "source_folder": "final-ver2",
+ "conventions": "cm; glTF +Y up, +Z front; left/right as seen from the front",
+ "n_products": 2,
+ "products": [
+  {
+   "id": "50544867",
+   "article": "50544867",
+   "file": "50544867-mini.glb",
+   "overall_cm": {
+    "width": 46.4,
+    "height": 94.3,
+    "depth": 53.9
+   },
+   "n_parts": 29,
+   "groups": {
+    "Panel": 2,
+    "Leg": 4,
+    "Post": 6,
+    "Rail": 5,
+    "Hardware": 12
+   },
+   "parts": [
+    {
+     "part_id": "P01",
+     "part": "Panel horizontal front",
+     "group": "Panel",
+     "auto_name": "Panel horizontal front",
+     "triangles": 1818,
+     "size_cm": [
+      43.2,
+      5.4,
+      42.8
+     ],
+     "center_cm": [
+      -0.0,
+      43.7,
+      5.6
+     ],
+     "kind": "Panel horizontal",
+     "length_cm": 43.2,
+     "thickness_cm": [
+      42.8,
+      3.2
+     ],
+     "main_axis": [
+      1.0,
+      -0.001,
+      -0.004
+     ]
+    },
+    {
+     "part_id": "P02",
+     "part": "Panel vertical back",
+     "group": "Panel",
+     "auto_name": "Panel vertical back",
+     "triangles": 1388,
+     "size_cm": [
+      43.2,
+      53.2,
+      25.3
+     ],
+     "center_cm": [
+      0.0,
+      67.7,
+      -14.3
+     ],
+     "kind": "Panel vertical",
+     "length_cm": 58.2,
+     "thickness_cm": [
+      43.2,
+      2.7
+     ],
+     "main_axis": [
+      -0.042,
+      0.914,
+      -0.404
+     ]
+    },
+    {
+     "part_id": "P03",
+     "part": "Leg back right",
+     "group": "Leg",
+     "auto_name": "Leg back right",
+     "triangles": 248,
+     "size_cm": [
+      11.2,
+      41.3,
+      8.7
+     ],
+     "center_cm": [
+      16.2,
+      20.7,
+      -12.3
+     ],
+     "kind": "Leg",
+     "length_cm": 42.7,
+     "thickness_cm": [
+      3.5,
+      3.5
+     ],
+     "main_axis": [
+      -0.203,
+      0.968,
+      0.145
+     ]
+    },
+    {
+     "part_id": "P04",
+     "part": "Leg front right",
+     "group": "Leg",
+     "auto_name": "Leg front right",
+     "triangles": 246,
+     "size_cm": [
+      12.6,
+      43.1,
+      11.6
+     ],
+     "center_cm": [
+      16.9,
+      21.6,
+      20.8
+     ],
+     "kind": "Leg",
+     "length_cm": 45.3,
+     "thickness_cm": [
+      3.6,
+      3.6
+     ],
+     "main_axis": [
+      -0.228,
+      0.952,
+      -0.204
+     ]
+    },
+    {
+     "part_id": "P05",
+     "part": "Leg front left",
+     "group": "Leg",
+     "auto_name": "Leg front left",
+     "triangles": 242,
+     "size_cm": [
+      12.6,
+      43.1,
+      11.6
+     ],
+     "center_cm": [
+      -16.9,
+      21.6,
+      20.9
+     ],
+     "kind": "Leg",
+     "length_cm": 45.3,
+     "thickness_cm": [
+      3.6,
+      3.6
+     ],
+     "main_axis": [
+      0.226,
+      0.954,
+      -0.199
+     ]
+    },
+    {
+     "part_id": "P06",
+     "part": "Leg back left",
+     "group": "Leg",
+     "auto_name": "Leg back left",
+     "triangles": 240,
+     "size_cm": [
+      11.2,
+      41.3,
+      8.7
+     ],
+     "center_cm": [
+      -16.2,
+      20.7,
+      -12.3
+     ],
+     "kind": "Leg",
+     "length_cm": 42.7,
+     "thickness_cm": [
+      3.6,
+      3.5
+     ],
+     "main_axis": [
+      0.203,
+      0.968,
+      0.145
+     ]
+    },
+    {
+     "part_id": "P07",
+     "part": "Post back right 1",
+     "group": "Post",
+     "auto_name": "Post back right 1",
+     "triangles": 38,
+     "size_cm": [
+      5.6,
+      45.0,
+      13.4
+     ],
+     "center_cm": [
+      13.9,
+      64.4,
+      -16.3
+     ],
+     "kind": "Post",
+     "length_cm": 46.3,
+     "thickness_cm": [
+      1.6,
+      1.6
+     ],
+     "main_axis": [
+      0.088,
+      0.963,
+      -0.256
+     ]
+    },
+    {
+     "part_id": "P08",
+     "part": "Post back left 1",
+     "group": "Post",
+     "auto_name": "Post back left 1",
+     "triangles": 38,
+     "size_cm": [
+      5.6,
+      44.9,
+      13.4
+     ],
+     "center_cm": [
+      -13.9,
+      64.4,
+      -16.3
+     ],
+     "kind": "Post",
+     "length_cm": 46.3,
+     "thickness_cm": [
+      1.7,
+      1.7
+     ],
+     "main_axis": [
+      -0.088,
+      0.963,
+      -0.254
+     ]
+    },
+    {
+     "part_id": "P09",
+     "part": "Post back right 2",
+     "group": "Post",
+     "auto_name": "Post back right 2",
+     "triangles": 36,
+     "size_cm": [
+      3.8,
+      49.0,
+      13.7
+     ],
+     "center_cm": [
+      8.3,
+      66.3,
+      -17.9
+     ],
+     "kind": "Post",
+     "length_cm": 50.1,
+     "thickness_cm": [
+      1.6,
+      1.6
+     ],
+     "main_axis": [
+      0.044,
+      0.969,
+      -0.242
+     ]
+    },
+    {
+     "part_id": "P10",
+     "part": "Post back left 2",
+     "group": "Post",
+     "auto_name": "Post back left 2",
+     "triangles": 36,
+     "size_cm": [
+      3.8,
+      49.0,
+      13.7
+     ],
+     "center_cm": [
+      -8.3,
+      66.3,
+      -17.9
+     ],
+     "kind": "Post",
+     "length_cm": 50.2,
+     "thickness_cm": [
+      1.7,
+      1.6
+     ],
+     "main_axis": [
+      -0.044,
+      0.969,
+      -0.241
+     ]
+    },
+    {
+     "part_id": "P11",
+     "part": "Post back 1",
+     "group": "Post",
+     "auto_name": "Post back 1",
+     "triangles": 32,
+     "size_cm": [
+      2.4,
+      50.9,
+      14.0
+     ],
+     "center_cm": [
+      2.8,
+      67.2,
+      -18.8
+     ],
+     "kind": "Post",
+     "length_cm": 52.1,
+     "thickness_cm": [
+      1.8,
+      1.7
+     ],
+     "main_axis": [
+      0.015,
+      0.97,
+      -0.242
+     ]
+    },
+    {
+     "part_id": "P12",
+     "part": "Post back 2",
+     "group": "Post",
+     "auto_name": "Post back 2",
+     "triangles": 32,
+     "size_cm": [
+      2.4,
+      50.9,
+      14.0
+     ],
+     "center_cm": [
+      -2.8,
+      67.2,
+      -18.8
+     ],
+     "kind": "Post",
+     "length_cm": 52.1,
+     "thickness_cm": [
+      1.7,
+      1.7
+     ],
+     "main_axis": [
+      -0.013,
+      0.971,
+      -0.239
+     ]
+    },
+    {
+     "part_id": "P13",
+     "part": "Rail left 1",
+     "group": "Rail",
+     "auto_name": "Rail left 1",
+     "triangles": 496,
+     "size_cm": [
+      4.5,
+      4.6,
+      31.1
+     ],
+     "center_cm": [
+      -12.3,
+      41.2,
+      3.7
+     ],
+     "kind": "Rail",
+     "length_cm": 31.1,
+     "thickness_cm": [
+      5.0,
+      2.7
+     ],
+     "main_axis": [
+      0.015,
+      0.07,
+      0.997
+     ]
+    },
+    {
+     "part_id": "P14",
+     "part": "Rail right 1",
+     "group": "Rail",
+     "auto_name": "Rail right 1",
+     "triangles": 488,
+     "size_cm": [
+      4.5,
+      4.6,
+      31.1
+     ],
+     "center_cm": [
+      12.3,
+      41.2,
+      3.7
+     ],
+     "kind": "Rail",
+     "length_cm": 31.0,
+     "thickness_cm": [
+      4.9,
+      3.0
+     ],
+     "main_axis": [
+      -0.005,
+      0.069,
+      0.998
+     ]
+    },
+    {
+     "part_id": "P15",
+     "part": "Rail",
+     "group": "Rail",
+     "auto_name": "Rail",
+     "triangles": 404,
+     "size_cm": [
+      34.0,
+      2.5,
+      2.6
+     ],
+     "center_cm": [
+      0.0,
+      17.4,
+      4.3
+     ],
+     "kind": "Rail",
+     "length_cm": 34.0,
+     "thickness_cm": [
+      2.6,
+      2.6
+     ],
+     "main_axis": [
+      1.0,
+      -0.001,
+      0.001
+     ]
+    },
+    {
+     "part_id": "P16",
+     "part": "Rail left 2",
+     "group": "Rail",
+     "auto_name": "Rail left 2",
+     "triangles": 318,
+     "size_cm": [
+      3.2,
+      2.5,
+      33.6
+     ],
+     "center_cm": [
+      -17.2,
+      17.3,
+      4.3
+     ],
+     "kind": "Rail",
+     "length_cm": 33.6,
+     "thickness_cm": [
+      2.6,
+      2.5
+     ],
+     "main_axis": [
+      -0.029,
+      0.001,
+      1.0
+     ]
+    },
+    {
+     "part_id": "P17",
+     "part": "Rail right 2",
+     "group": "Rail",
+     "auto_name": "Rail right 2",
+     "triangles": 304,
+     "size_cm": [
+      3.2,
+      2.5,
+      33.6
+     ],
+     "center_cm": [
+      17.2,
+      17.3,
+      4.3
+     ],
+     "kind": "Rail",
+     "length_cm": 33.6,
+     "thickness_cm": [
+      2.6,
+      2.6
+     ],
+     "main_axis": [
+      0.027,
+      0.002,
+      1.0
+     ]
+    },
+    {
+     "part_id": "P18",
+     "part": "Bolt/screw 1",
+     "group": "Hardware",
+     "auto_name": "Bolt/screw 1",
+     "triangles": 450,
+     "size_cm": [
+      5.2,
+      1.2,
+      1.2
+     ],
+     "center_cm": [
+      -15.6,
+      17.3,
+      4.3
+     ],
+     "kind": "Bolt/screw",
+     "length_cm": 5.2,
+     "thickness_cm": [
+      1.2,
+      1.2
+     ],
+     "main_axis": [
+      0.999,
+      0.045,
+      0.027
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 52
+     },
+     "hardware_key": "Bolt/screw Ø12x52"
+    },
+    {
+     "part_id": "P19",
+     "part": "Bolt/screw 2",
+     "group": "Hardware",
+     "auto_name": "Bolt/screw 2",
+     "triangles": 424,
+     "size_cm": [
+      5.2,
+      1.2,
+      1.2
+     ],
+     "center_cm": [
+      15.6,
+      17.3,
+      4.3
+     ],
+     "kind": "Bolt/screw",
+     "length_cm": 5.2,
+     "thickness_cm": [
+      1.2,
+      1.2
+     ],
+     "main_axis": [
+      0.997,
+      -0.057,
+      -0.044
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 52
+     },
+     "hardware_key": "Bolt/screw Ø12x52"
+    },
+    {
+     "part_id": "P20",
+     "part": "Nut/fitting 1",
+     "group": "Hardware",
+     "auto_name": "Nut/fitting 1",
+     "triangles": 128,
+     "size_cm": [
+      1.0,
+      1.5,
+      1.1
+     ],
+     "center_cm": [
+      -14.5,
+      17.1,
+      4.3
+     ],
+     "kind": "Nut/fitting",
+     "length_cm": 1.5,
+     "thickness_cm": [
+      1.1,
+      1.0
+     ],
+     "main_axis": [
+      0.085,
+      0.987,
+      -0.136
+     ],
+     "hardware_mm": {
+      "diameter": 11,
+      "length": 15
+     },
+     "hardware_key": "Nut/fitting Ø11x15"
+    },
+    {
+     "part_id": "P21",
+     "part": "Nut/fitting 2",
+     "group": "Hardware",
+     "auto_name": "Nut/fitting 2",
+     "triangles": 120,
+     "size_cm": [
+      1.0,
+      1.4,
+      1.0
+     ],
+     "center_cm": [
+      14.5,
+      17.1,
+      4.3
+     ],
+     "kind": "Nut/fitting",
+     "length_cm": 1.5,
+     "thickness_cm": [
+      1.1,
+      1.0
+     ],
+     "main_axis": [
+      0.123,
+      0.99,
+      -0.07
+     ],
+     "hardware_mm": {
+      "diameter": 11,
+      "length": 15
+     },
+     "hardware_key": "Nut/fitting Ø11x15"
+    },
+    {
+     "part_id": "P22",
+     "part": "Screw head/washer 1",
+     "group": "Hardware",
+     "auto_name": "Screw head/washer 1",
+     "triangles": 84,
+     "size_cm": [
+      1.2,
+      0.4,
+      1.2
+     ],
+     "center_cm": [
+      -13.2,
+      39.4,
+      -5.8
+     ],
+     "kind": "Screw head/washer",
+     "length_cm": 1.2,
+     "thickness_cm": [
+      1.2,
+      0.4
+     ],
+     "main_axis": [
+      -0.331,
+      0.075,
+      0.941
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 12
+     },
+     "hardware_key": "Screw head/washer Ø12x12"
+    },
+    {
+     "part_id": "P23",
+     "part": "Screw head/washer 2",
+     "group": "Hardware",
+     "auto_name": "Screw head/washer 2",
+     "triangles": 82,
+     "size_cm": [
+      1.2,
+      0.4,
+      1.2
+     ],
+     "center_cm": [
+      13.3,
+      39.4,
+      -5.8
+     ],
+     "kind": "Screw head/washer",
+     "length_cm": 1.2,
+     "thickness_cm": [
+      1.2,
+      0.4
+     ],
+     "main_axis": [
+      0.99,
+      0.019,
+      0.142
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 12
+     },
+     "hardware_key": "Screw head/washer Ø12x12"
+    },
+    {
+     "part_id": "P24",
+     "part": "Screw head/washer 3",
+     "group": "Hardware",
+     "auto_name": "Screw head/washer 3",
+     "triangles": 80,
+     "size_cm": [
+      1.2,
+      0.4,
+      1.2
+     ],
+     "center_cm": [
+      -13.3,
+      40.7,
+      13.4
+     ],
+     "kind": "Screw head/washer",
+     "length_cm": 1.2,
+     "thickness_cm": [
+      1.2,
+      0.4
+     ],
+     "main_axis": [
+      0.093,
+      0.081,
+      0.992
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 12
+     },
+     "hardware_key": "Screw head/washer Ø12x12"
+    },
+    {
+     "part_id": "P25",
+     "part": "Screw head/washer 4",
+     "group": "Hardware",
+     "auto_name": "Screw head/washer 4",
+     "triangles": 80,
+     "size_cm": [
+      1.2,
+      0.4,
+      1.2
+     ],
+     "center_cm": [
+      13.3,
+      40.7,
+      13.3
+     ],
+     "kind": "Screw head/washer",
+     "length_cm": 1.2,
+     "thickness_cm": [
+      1.2,
+      0.4
+     ],
+     "main_axis": [
+      -0.367,
+      0.066,
+      0.928
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 12
+     },
+     "hardware_key": "Screw head/washer Ø12x12"
+    },
+    {
+     "part_id": "P26",
+     "part": "Screw head/washer 5",
+     "group": "Hardware",
+     "auto_name": "Screw head/washer 5",
+     "triangles": 80,
+     "size_cm": [
+      1.2,
+      0.4,
+      1.2
+     ],
+     "center_cm": [
+      -11.2,
+      40.2,
+      5.8
+     ],
+     "kind": "Screw head/washer",
+     "length_cm": 1.2,
+     "thickness_cm": [
+      1.2,
+      0.4
+     ],
+     "main_axis": [
+      0.641,
+      0.024,
+      0.767
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 12
+     },
+     "hardware_key": "Screw head/washer Ø12x12"
+    },
+    {
+     "part_id": "P27",
+     "part": "Screw head/washer 6",
+     "group": "Hardware",
+     "auto_name": "Screw head/washer 6",
+     "triangles": 76,
+     "size_cm": [
+      1.2,
+      0.4,
+      1.2
+     ],
+     "center_cm": [
+      11.3,
+      40.2,
+      5.8
+     ],
+     "kind": "Screw head/washer",
+     "length_cm": 1.2,
+     "thickness_cm": [
+      1.2,
+      0.4
+     ],
+     "main_axis": [
+      -0.592,
+      0.034,
+      0.806
+     ],
+     "hardware_mm": {
+      "diameter": 12,
+      "length": 12
+     },
+     "hardware_key": "Screw head/washer Ø12x12"
+    },
+    {
+     "part_id": "P28",
+     "part": "Nut/fitting 3",
+     "group": "Hardware",
+     "auto_name": "Nut/fitting 3",
+     "triangles": 62,
+     "size_cm": [
+      0.8,
+      0.7,
+      0.5
+     ],
+     "center_cm": [
+      16.5,
+      42.2,
+      -4.3
+     ],
+     "kind": "Nut/fitting",
+     "length_cm": 0.8,
+     "thickness_cm": [
+      0.8,
+      0.4
+     ],
+     "main_axis": [
+      0.72,
+      0.622,
+      -0.309
+     ],
+     "hardware_mm": {
+      "diameter": 8,
+      "length": 8
+     },
+     "hardware_key": "Nut/fitting Ø8x8"
+    },
+    {
+     "part_id": "P29",
+     "part": "Nut/fitting 4",
+     "group": "Hardware",
+     "auto_name": "Nut/fitting 4",
+     "triangles": 60,
+     "size_cm": [
+      0.8,
+      0.7,
+      0.5
+     ],
+     "center_cm": [
+      -16.5,
+      42.2,
+      -4.3
+     ],
+     "kind": "Nut/fitting",
+     "length_cm": 0.7,
+     "thickness_cm": [
+      0.7,
+      0.4
+     ],
+     "main_axis": [
+      -0.358,
+      0.829,
+      -0.43
+     ],
+     "hardware_mm": {
+      "diameter": 7,
+      "length": 7
+     },
+     "hardware_key": "Nut/fitting Ø7x7"
+    }
+   ],
+   "joints": [
+    {
+     "a": "Panel horizontal front",
+     "b": "Panel vertical back",
+     "a_id": "P01",
+     "b_id": "P02",
+     "kind": "surface",
+     "contact_points": 68,
+     "point_cm": [
+      0.5,
+      42.2,
+      -2.6
+     ],
+     "normal": [
+      -0.0,
+      0.977,
+      0.215
+     ],
+     "patch_cm": [
+      33.9,
+      2.7
+     ],
+     "interface_key": "surface 34x3cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Post back right 1",
+     "a_id": "P01",
+     "b_id": "P07",
+     "kind": "end-in-socket",
+     "contact_points": 16,
+     "point_cm": [
+      12.3,
+      41.9,
+      -10.8
+     ],
+     "normal": [
+      -0.059,
+      -0.976,
+      0.211
+     ],
+     "patch_cm": [
+      1.4,
+      0.4
+     ],
+     "interface_key": "end-in-socket 1x0cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Post back left 1",
+     "a_id": "P01",
+     "b_id": "P08",
+     "kind": "end-in-socket",
+     "contact_points": 8,
+     "point_cm": [
+      -12.2,
+      41.9,
+      -10.9
+     ],
+     "normal": [
+      0.272,
+      -0.804,
+      0.529
+     ],
+     "patch_cm": [
+      1.0,
+      0.1
+     ],
+     "interface_key": "end-in-socket 1x0cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Post back right 2",
+     "a_id": "P01",
+     "b_id": "P09",
+     "kind": "end-in-socket",
+     "contact_points": 13,
+     "point_cm": [
+      7.5,
+      41.8,
+      -12.5
+     ],
+     "normal": [
+      0.024,
+      0.97,
+      -0.243
+     ],
+     "patch_cm": [
+      1.0,
+      0.2
+     ],
+     "interface_key": "end-in-socket 1x0cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Post back left 2",
+     "a_id": "P01",
+     "b_id": "P10",
+     "kind": "end-in-socket",
+     "contact_points": 9,
+     "point_cm": [
+      -7.6,
+      41.9,
+      -12.2
+     ],
+     "normal": [
+      0.373,
+      0.76,
+      0.533
+     ],
+     "patch_cm": [
+      1.3,
+      0.1
+     ],
+     "interface_key": "end-in-socket 1x0cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Post back 1",
+     "a_id": "P01",
+     "b_id": "P11",
+     "kind": "end-in-socket",
+     "contact_points": 13,
+     "point_cm": [
+      2.5,
+      41.8,
+      -13.2
+     ],
+     "normal": [
+      0.008,
+      -0.998,
+      0.06
+     ],
+     "patch_cm": [
+      1.1,
+      0.2
+     ],
+     "interface_key": "end-in-socket 1x0cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Post back 2",
+     "a_id": "P01",
+     "b_id": "P12",
+     "kind": "end-in-socket",
+     "contact_points": 9,
+     "point_cm": [
+      -2.3,
+      41.8,
+      -13.2
+     ],
+     "normal": [
+      -0.098,
+      0.891,
+      0.444
+     ],
+     "patch_cm": [
+      1.0,
+      0.2
+     ],
+     "interface_key": "end-in-socket 1x0cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Rail left 1",
+     "a_id": "P01",
+     "b_id": "P13",
+     "kind": "surface",
+     "contact_points": 140,
+     "point_cm": [
+      -12.6,
+      42.4,
+      4.3
+     ],
+     "normal": [
+      0.0,
+      0.998,
+      -0.07
+     ],
+     "patch_cm": [
+      25.3,
+      3.1
+     ],
+     "interface_key": "surface 25x3cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Rail right 1",
+     "a_id": "P01",
+     "b_id": "P14",
+     "kind": "surface",
+     "contact_points": 123,
+     "point_cm": [
+      12.7,
+      42.4,
+      3.2
+     ],
+     "normal": [
+      0.0,
+      0.998,
+      -0.07
+     ],
+     "patch_cm": [
+      25.3,
+      3.1
+     ],
+     "interface_key": "surface 25x3cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Nut/fitting 3",
+     "a_id": "P01",
+     "b_id": "P28",
+     "kind": "fastener",
+     "contact_points": 70,
+     "point_cm": [
+      16.5,
+      42.3,
+      -4.2
+     ],
+     "normal": [
+      -0.935,
+      -0.078,
+      -0.345
+     ],
+     "patch_cm": [
+      0.6,
+      0.5
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Panel horizontal front",
+     "b": "Nut/fitting 4",
+     "a_id": "P01",
+     "b_id": "P29",
+     "kind": "fastener",
+     "contact_points": 74,
+     "point_cm": [
+      -16.5,
+      42.3,
+      -4.2
+     ],
+     "normal": [
+      -0.018,
+      0.213,
+      -0.977
+     ],
+     "patch_cm": [
+      0.5,
+      0.6
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Post back right 1",
+     "a_id": "P02",
+     "b_id": "P07",
+     "kind": "end-in-socket",
+     "contact_points": 38,
+     "point_cm": [
+      15.7,
+      86.7,
+      -22.2
+     ],
+     "normal": [
+      -0.088,
+      -0.962,
+      0.259
+     ],
+     "patch_cm": [
+      1.6,
+      1.5
+     ],
+     "interface_key": "end-in-socket 2x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Post back left 1",
+     "a_id": "P02",
+     "b_id": "P08",
+     "kind": "end-in-socket",
+     "contact_points": 32,
+     "point_cm": [
+      -15.9,
+      86.6,
+      -22.3
+     ],
+     "normal": [
+      0.092,
+      -0.963,
+      0.252
+     ],
+     "patch_cm": [
+      1.6,
+      1.5
+     ],
+     "interface_key": "end-in-socket 2x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Post back right 2",
+     "a_id": "P02",
+     "b_id": "P09",
+     "kind": "end-in-socket",
+     "contact_points": 27,
+     "point_cm": [
+      9.3,
+      90.7,
+      -23.6
+     ],
+     "normal": [
+      -0.046,
+      -0.968,
+      0.246
+     ],
+     "patch_cm": [
+      1.6,
+      1.0
+     ],
+     "interface_key": "end-in-socket 2x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Post back left 2",
+     "a_id": "P02",
+     "b_id": "P10",
+     "kind": "end-in-socket",
+     "contact_points": 22,
+     "point_cm": [
+      -9.3,
+      90.6,
+      -24.0
+     ],
+     "normal": [
+      0.047,
+      -0.97,
+      0.24
+     ],
+     "patch_cm": [
+      1.5,
+      1.4
+     ],
+     "interface_key": "end-in-socket 2x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Post back 1",
+     "a_id": "P02",
+     "b_id": "P11",
+     "kind": "end-in-socket",
+     "contact_points": 26,
+     "point_cm": [
+      3.1,
+      92.4,
+      -25.3
+     ],
+     "normal": [
+      -0.011,
+      -0.971,
+      0.241
+     ],
+     "patch_cm": [
+      1.6,
+      1.3
+     ],
+     "interface_key": "end-in-socket 2x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Post back 2",
+     "a_id": "P02",
+     "b_id": "P12",
+     "kind": "end-in-socket",
+     "contact_points": 23,
+     "point_cm": [
+      -2.9,
+      92.5,
+      -25.2
+     ],
+     "normal": [
+      0.013,
+      -0.972,
+      0.234
+     ],
+     "patch_cm": [
+      1.6,
+      1.5
+     ],
+     "interface_key": "end-in-socket 2x1cm"
+    },
+    {
+     "a": "Panel vertical back",
+     "b": "Nut/fitting 3",
+     "a_id": "P02",
+     "b_id": "P28",
+     "kind": "fastener",
+     "contact_points": 5,
+     "point_cm": [
+      16.7,
+      42.4,
+      -4.1
+     ],
+     "normal": [
+      -0.18,
+      0.391,
+      -0.902
+     ],
+     "patch_cm": [
+      0.2,
+      0.2
+     ],
+     "interface_key": "fastener 0x0cm"
+    },
+    {
+     "a": "Leg back right",
+     "b": "Rail right 1",
+     "a_id": "P03",
+     "b_id": "P14",
+     "kind": "surface",
+     "contact_points": 37,
+     "point_cm": [
+      11.7,
+      41.1,
+      -9.0
+     ],
+     "normal": [
+      -0.197,
+      0.972,
+      0.129
+     ],
+     "patch_cm": [
+      2.4,
+      2.3
+     ],
+     "interface_key": "surface 2x2cm"
+    },
+    {
+     "a": "Leg front right",
+     "b": "Rail right 1",
+     "a_id": "P04",
+     "b_id": "P14",
+     "kind": "surface",
+     "contact_points": 65,
+     "point_cm": [
+      12.1,
+      41.8,
+      16.8
+     ],
+     "normal": [
+      0.621,
+      0.718,
+      0.315
+     ],
+     "patch_cm": [
+      3.0,
+      2.8
+     ],
+     "interface_key": "surface 3x3cm"
+    },
+    {
+     "a": "Leg front left",
+     "b": "Rail left 1",
+     "a_id": "P05",
+     "b_id": "P13",
+     "kind": "surface",
+     "contact_points": 78,
+     "point_cm": [
+      -11.9,
+      41.7,
+      16.6
+     ],
+     "normal": [
+      -0.549,
+      0.711,
+      0.44
+     ],
+     "patch_cm": [
+      3.1,
+      3.0
+     ],
+     "interface_key": "surface 3x3cm"
+    },
+    {
+     "a": "Leg back left",
+     "b": "Rail left 1",
+     "a_id": "P06",
+     "b_id": "P13",
+     "kind": "surface",
+     "contact_points": 43,
+     "point_cm": [
+      -11.8,
+      40.8,
+      -8.9
+     ],
+     "normal": [
+      -0.603,
+      -0.771,
+      -0.206
+     ],
+     "patch_cm": [
+      2.9,
+      2.3
+     ],
+     "interface_key": "surface 3x2cm"
+    },
+    {
+     "a": "Rail left 1",
+     "b": "Screw head/washer 1",
+     "a_id": "P13",
+     "b_id": "P22",
+     "kind": "fastener",
+     "contact_points": 142,
+     "point_cm": [
+      -13.3,
+      39.4,
+      -5.8
+     ],
+     "normal": [
+      0.027,
+      0.999,
+      -0.036
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Rail left 1",
+     "b": "Screw head/washer 3",
+     "a_id": "P13",
+     "b_id": "P24",
+     "kind": "fastener",
+     "contact_points": 145,
+     "point_cm": [
+      -13.3,
+      40.8,
+      13.3
+     ],
+     "normal": [
+      0.047,
+      -0.995,
+      0.086
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Rail left 1",
+     "b": "Screw head/washer 5",
+     "a_id": "P13",
+     "b_id": "P26",
+     "kind": "fastener",
+     "contact_points": 151,
+     "point_cm": [
+      -11.2,
+      40.2,
+      5.8
+     ],
+     "normal": [
+      -0.052,
+      -0.996,
+      0.077
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Rail right 1",
+     "b": "Screw head/washer 2",
+     "a_id": "P14",
+     "b_id": "P23",
+     "kind": "fastener",
+     "contact_points": 162,
+     "point_cm": [
+      13.3,
+      39.4,
+      -5.8
+     ],
+     "normal": [
+      -0.004,
+      -0.996,
+      0.087
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Rail right 1",
+     "b": "Screw head/washer 4",
+     "a_id": "P14",
+     "b_id": "P25",
+     "kind": "fastener",
+     "contact_points": 156,
+     "point_cm": [
+      13.3,
+      40.8,
+      13.3
+     ],
+     "normal": [
+      0.04,
+      0.995,
+      -0.091
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Rail right 1",
+     "b": "Screw head/washer 6",
+     "a_id": "P14",
+     "b_id": "P27",
+     "kind": "fastener",
+     "contact_points": 167,
+     "point_cm": [
+      11.3,
+      40.2,
+      5.8
+     ],
+     "normal": [
+      0.006,
+      -0.997,
+      0.076
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Rail",
+     "b": "Rail left 2",
+     "a_id": "P15",
+     "b_id": "P16",
+     "kind": "surface",
+     "contact_points": 100,
+     "point_cm": [
+      -16.9,
+      17.4,
+      4.3
+     ],
+     "normal": [
+      0.956,
+      0.015,
+      0.293
+     ],
+     "patch_cm": [
+      1.9,
+      1.8
+     ],
+     "interface_key": "surface 2x2cm"
+    },
+    {
+     "a": "Rail",
+     "b": "Rail right 2",
+     "a_id": "P15",
+     "b_id": "P17",
+     "kind": "surface",
+     "contact_points": 86,
+     "point_cm": [
+      16.9,
+      17.5,
+      4.3
+     ],
+     "normal": [
+      -0.999,
+      -0.025,
+      0.035
+     ],
+     "patch_cm": [
+      1.8,
+      1.7
+     ],
+     "interface_key": "surface 2x2cm"
+    },
+    {
+     "a": "Rail",
+     "b": "Bolt/screw 1",
+     "a_id": "P15",
+     "b_id": "P18",
+     "kind": "fastener",
+     "contact_points": 122,
+     "point_cm": [
+      -15.5,
+      17.5,
+      4.4
+     ],
+     "normal": [
+      -0.091,
+      0.763,
+      0.639
+     ],
+     "patch_cm": [
+      3.3,
+      0.9
+     ],
+     "interface_key": "fastener 3x1cm"
+    },
+    {
+     "a": "Rail",
+     "b": "Bolt/screw 2",
+     "a_id": "P15",
+     "b_id": "P19",
+     "kind": "fastener",
+     "contact_points": 105,
+     "point_cm": [
+      15.6,
+      17.4,
+      4.3
+     ],
+     "normal": [
+      -0.138,
+      -0.888,
+      -0.439
+     ],
+     "patch_cm": [
+      3.2,
+      0.8
+     ],
+     "interface_key": "fastener 3x1cm"
+    },
+    {
+     "a": "Rail",
+     "b": "Nut/fitting 1",
+     "a_id": "P15",
+     "b_id": "P20",
+     "kind": "fastener",
+     "contact_points": 154,
+     "point_cm": [
+      -14.5,
+      17.3,
+      4.3
+     ],
+     "normal": [
+      -0.114,
+      0.106,
+      -0.988
+     ],
+     "patch_cm": [
+      1.8,
+      1.4
+     ],
+     "interface_key": "fastener 2x1cm"
+    },
+    {
+     "a": "Rail",
+     "b": "Nut/fitting 2",
+     "a_id": "P15",
+     "b_id": "P21",
+     "kind": "fastener",
+     "contact_points": 159,
+     "point_cm": [
+      14.5,
+      17.3,
+      4.3
+     ],
+     "normal": [
+      0.068,
+      -0.003,
+      -0.998
+     ],
+     "patch_cm": [
+      1.6,
+      1.1
+     ],
+     "interface_key": "fastener 2x1cm"
+    },
+    {
+     "a": "Rail left 2",
+     "b": "Bolt/screw 1",
+     "a_id": "P16",
+     "b_id": "P18",
+     "kind": "fastener",
+     "contact_points": 141,
+     "point_cm": [
+      -17.7,
+      17.3,
+      4.3
+     ],
+     "normal": [
+      -0.03,
+      0.44,
+      0.897
+     ],
+     "patch_cm": [
+      1.5,
+      1.3
+     ],
+     "interface_key": "fastener 2x1cm"
+    },
+    {
+     "a": "Rail right 2",
+     "b": "Bolt/screw 2",
+     "a_id": "P17",
+     "b_id": "P19",
+     "kind": "fastener",
+     "contact_points": 122,
+     "point_cm": [
+      17.7,
+      17.3,
+      4.3
+     ],
+     "normal": [
+      -0.059,
+      0.793,
+      0.606
+     ],
+     "patch_cm": [
+      1.3,
+      1.3
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Bolt/screw 1",
+     "b": "Nut/fitting 1",
+     "a_id": "P18",
+     "b_id": "P20",
+     "kind": "fastener",
+     "contact_points": 229,
+     "point_cm": [
+      -14.5,
+      17.4,
+      4.4
+     ],
+     "normal": [
+      -0.02,
+      0.493,
+      -0.87
+     ],
+     "patch_cm": [
+      1.1,
+      0.9
+     ],
+     "interface_key": "fastener 1x1cm"
+    },
+    {
+     "a": "Bolt/screw 2",
+     "b": "Nut/fitting 2",
+     "a_id": "P19",
+     "b_id": "P21",
+     "kind": "fastener",
+     "contact_points": 178,
+     "point_cm": [
+      14.5,
+      17.5,
+      4.4
+     ],
+     "normal": [
+      0.095,
+      0.508,
+      0.856
+     ],
+     "patch_cm": [
+      1.3,
+      0.7
+     ],
+     "interface_key": "fastener 1x1cm"
+    }
+   ],
+   "assembly_order": [
+    "Panel horizontal front",
+    "Panel vertical back",
+    "Rail left 1",
+    "Rail right 1",
+    "Post back left 1",
+    "Post back right 1",
+    "Post back right 2",
+    "Post back left 2",
+    "Post back 1",
+    "Post back 2",
+    "Nut/fitting 3",
+    "Nut/fitting 4",
+    "Leg front left",
+    "Leg back left",
+    "Screw head/washer 1",
+    "Screw head/washer 5",
+    "Screw head/washer 3",
+    "Leg back right",
+    "Leg front right",
+    "Screw head/washer 2",
+    "Screw head/washer 4",
+    "Screw head/washer 6",
+    "Rail",
+    "Rail left 2",
+    "Rail right 2",
+    "Bolt/screw 1",
+    "Bolt/screw 2",
+    "Nut/fitting 1",
+    "Nut/fitting 2"
+   ]
+  },
+  {
+   "id": "70541165",
+   "article": "70541165",
+   "file": "70541165-mini.glb",
+   "overall_cm": {
+    "width": 54.6,
+    "height": 83.5,
+    "depth": 55.9
+   },
+   "n_parts": 3,
+   "groups": {
+    "Panel": 1,
+    "Body": 1,
+    "Rail": 1
+   },
+   "parts": [
+    {
+     "part_id": "P01",
+     "part": "Panel horizontal",
+     "group": "Panel",
+     "auto_name": "Panel horizontal",
+     "triangles": 1708,
+     "size_cm": [
+      47.4,
+      4.8,
+      36.3
+     ],
+     "center_cm": [
+      0.1,
+      43.2,
+      2.9
+     ],
+     "kind": "Panel horizontal",
+     "length_cm": 48.4,
+     "thickness_cm": [
+      38.9,
+      3.8
+     ],
+     "main_axis": [
+      0.99,
+      0.0,
+      0.14
+     ]
+    },
+    {
+     "part_id": "P02",
+     "part": "Body",
+     "group": "Body",
+     "auto_name": "Body",
+     "triangles": 3230,
+     "size_cm": [
+      54.6,
+      83.5,
+      55.9
+     ],
+     "center_cm": [
+      -0.0,
+      41.8,
+      0.0
+     ],
+     "kind": "Body",
+     "length_cm": 98.8,
+     "thickness_cm": [
+      74.7,
+      59.4
+     ],
+     "main_axis": [
+      0.11,
+      0.786,
+      -0.608
+     ]
+    },
+    {
+     "part_id": "P03",
+     "part": "Rail front",
+     "group": "Rail",
+     "auto_name": "Rail front",
+     "triangles": 286,
+     "size_cm": [
+      47.2,
+      2.7,
+      3.9
+     ],
+     "center_cm": [
+      0.1,
+      41.9,
+      23.2
+     ],
+     "kind": "Rail",
+     "length_cm": 47.2,
+     "thickness_cm": [
+      3.9,
+      2.6
+     ],
+     "main_axis": [
+      1.0,
+      -0.002,
+      0.011
+     ]
+    }
+   ],
+   "joints": [
+    {
+     "a": "Panel horizontal",
+     "b": "Body",
+     "a_id": "P01",
+     "b_id": "P02",
+     "kind": "surface",
+     "contact_points": 135,
+     "point_cm": [
+      -2.3,
+      42.6,
+      -1.9
+     ],
+     "normal": [
+      -0.004,
+      -1.0,
+      -0.009
+     ],
+     "patch_cm": [
+      46.5,
+      40.9
+     ],
+     "interface_key": "surface 46x41cm"
+    },
+    {
+     "a": "Body",
+     "b": "Rail front",
+     "a_id": "P02",
+     "b_id": "P03",
+     "kind": "surface",
+     "contact_points": 69,
+     "point_cm": [
+      -2.3,
+      41.6,
+      21.8
+     ],
+     "normal": [
+      0.018,
+      0.274,
+      -0.961
+     ],
+     "patch_cm": [
+      41.0,
+      2.2
+     ],
+     "interface_key": "surface 41x2cm"
+    }
+   ],
+   "assembly_order": [
+    "Body",
+    "Panel horizontal",
+    "Rail front"
+   ]
+  }
+ ],
+ "hardware_index": {
+  "Bolt/screw Ø12x52": [
+   {
+    "product": "50544867",
+    "part": "Bolt/screw 1"
+   },
+   {
+    "product": "50544867",
+    "part": "Bolt/screw 2"
+   }
+  ],
+  "Nut/fitting Ø11x15": [
+   {
+    "product": "50544867",
+    "part": "Nut/fitting 1"
+   },
+   {
+    "product": "50544867",
+    "part": "Nut/fitting 2"
+   }
+  ],
+  "Nut/fitting Ø7x7": [
+   {
+    "product": "50544867",
+    "part": "Nut/fitting 4"
+   }
+  ],
+  "Nut/fitting Ø8x8": [
+   {
+    "product": "50544867",
+    "part": "Nut/fitting 3"
+   }
+  ],
+  "Screw head/washer Ø12x12": [
+   {
+    "product": "50544867",
+    "part": "Screw head/washer 1"
+   },
+   {
+    "product": "50544867",
+    "part": "Screw head/washer 2"
+   },
+   {
+    "product": "50544867",
+    "part": "Screw head/washer 3"
+   },
+   {
+    "product": "50544867",
+    "part": "Screw head/washer 4"
+   },
+   {
+    "product": "50544867",
+    "part": "Screw head/washer 5"
+   },
+   {
+    "product": "50544867",
+    "part": "Screw head/washer 6"
+   }
+  ]
+ },
+ "shared_hardware": {},
+ "shared_interfaces": {}
+}

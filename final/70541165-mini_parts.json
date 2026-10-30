@@ -1,0 +1,56 @@
+{
+ "source": "70541165-mini.glb",
+ "parts": [
+  {
+   "part_id": "P01",
+   "part": "Panel horizontal",
+   "group": "Panel",
+   "auto_name": "Panel horizontal",
+   "triangles": 1708,
+   "size_cm": [
+    47.4,
+    4.8,
+    36.3
+   ],
+   "center_cm": [
+    0.1,
+    43.2,
+    2.9
+   ]
+  },
+  {
+   "part_id": "P02",
+   "part": "Body",
+   "group": "Body",
+   "auto_name": "Body",
+   "triangles": 3230,
+   "size_cm": [
+    54.6,
+    83.5,
+    55.9
+   ],
+   "center_cm": [
+    -0.0,
+    41.8,
+    0.0
+   ]
+  },
+  {
+   "part_id": "P03",
+   "part": "Rail front",
+   "group": "Rail",
+   "auto_name": "Rail front",
+   "triangles": 286,
+   "size_cm": [
+    47.2,
+    2.7,
+    3.9
+   ],
+   "center_cm": [
+    0.1,
+    41.9,
+    23.2
+   ]
+  }
+ ]
+}

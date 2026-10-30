@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drawing vs Model</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f4f3f0; --panel: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #7a7974;
+    --rule: #e2e1dc; --dim: #2a78d6; --label-bg: rgba(252,252,251,.92);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #121211; --panel: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #8f8e88;
+      --rule: #33332f; --dim: #6da7ec; --label-bg: rgba(26,26,25,.92);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #121211; --panel: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #8f8e88;
+    --rule: #33332f; --dim: #6da7ec; --label-bg: rgba(26,26,25,.92);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }
+  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  h1 { font-size: 26px; margin: 0 0 6px; font-weight: 650; }
+  .subtitle { color: var(--ink-2); margin: 0 0 18px; max-width: 780px; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; }
+  #stage { position: relative; height: 620px; overflow: hidden; border-radius: 12px; }
+  @media (max-width: 860px) { #stage { height: 440px; } }
+  .controls { position: absolute; top: 12px; left: 12px; z-index: 2; display: flex; gap: 6px; flex-wrap: wrap; }
+  .controls button { font: inherit; font-size: 12px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 4px 9px; cursor: pointer; }
+  .controls button[aria-pressed="true"] { border-color: var(--dim); color: var(--dim); }
+  .dim-label {
+    font: 600 11px/1.25 Inter, system-ui, sans-serif; color: var(--dim); background: var(--label-bg);
+    border: 1px solid var(--dim); border-radius: 10px; padding: 2px 7px; white-space: nowrap; cursor: default;
+    pointer-events: auto; transition: opacity .15s;
+  }
+  .dim-label small { font-weight: 400; color: var(--ink-2); }
+  .dim-label.dimmed { opacity: .2; }
+  .side { padding: 16px; }
+  .side h2 { font-size: 14px; margin: 0 0 4px; }
+  .side p { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 6px 4px; border-bottom: 1px solid var(--rule); text-align: left; }
+  th { color: var(--muted); font-weight: 500; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr { cursor: pointer; }
+  tr.active td { background: color-mix(in srgb, var(--dim) 12%, transparent); }
+  .diff-big { font-weight: 650; color: var(--ink); }
+  .note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .source { font-size: 12px; color: var(--muted); margin-top: 14px; }
+  #err { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--ink-2); }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">IKEA drawing ↔ 3D model</p>
+  <h1 id="title">The drawing's numbers on the 3D model</h1>
+  <p class="subtitle">Each published dimension is drawn here at the place it measures on IKEA's own web 3D model (GLB), with the length measured from the model's geometry next to it. Drag to orbit, scroll to zoom, hover a label or a row to isolate it.</p>
+
+  <div class="layout">
+    <div class="card" id="stage">
+      <div class="controls">
+        <button id="tDims" aria-pressed="true">Dimensions</button>
+        <button id="tUnits" aria-pressed="false">Inches</button>
+        <button data-view="persp">3/4 view</button>
+        <button data-view="front">Front</button>
+        <button data-view="side">Side</button>
+      </div>
+      <div id="err"></div>
+    </div>
+    <div class="card side">
+      <h2>Drawing vs. model</h2>
+      <p>Drawing = IKEA's published dimension. Model = the same length measured on the GLB's vertices.</p>
+      <table id="tbl">
+        <thead><tr><th>Dimension</th><th class="num">Drawing</th><th class="num">Model</th><th class="num">Δ</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="note">The model is a lightweight web asset, so small differences are expected. How each length is measured is set in the spec JSON used by fit_dimensions.py.</p>
+    </div>
+  </div>
+  <p class="source"><span id="src">Sources: IKEA product page — dimension drawing and web 3D model.</span> Model and drawing © IKEA; used for non-commercial coursework. Dimensions embedded in the GLB's node extras (<code>ikea_dimensions</code>). Visualization: Hebin Rachel Shin.</p>
+</main>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const stage = document.getElementById('stage');
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+stage.appendChild(renderer.domElement);
+const labels = new CSS2DRenderer();
+labels.domElement.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
+stage.appendChild(labels.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 20);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.42, 0);
+controls.enableDamping = true;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8a85, 2.2));
+const sun = new THREE.DirectionalLight(0xffffff, 2.0); sun.position.set(1.5, 2.5, 2); scene.add(sun);
+const floor = new THREE.Mesh(new THREE.CircleGeometry(0.75, 64), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.05 }));
+floor.rotation.x = -Math.PI / 2; scene.add(floor);
+
+const VIEWS = { persp: [1.25, 1.0, 1.55], front: [0, 0.45, 2.2], side: [2.2, 0.45, 0] };
+function setView(k) { camera.position.set(...VIEWS[k]); controls.target.set(0, 0.42, 0); controls.update(); }
+setView('persp');
+document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => setView(b.dataset.view));
+
+let inches = false, dimsOn = true;
+const dimGroup = new THREE.Group(); scene.add(dimGroup);
+const items = [];   // {d, group, label}
+
+const FILE = new URLSearchParams(location.search).get('file') || 'model_dims.glb';
+new GLTFLoader().load(FILE, gltf => {
+  scene.add(gltf.scene);
+  let spec = null;
+  gltf.scene.traverse(o => { if (o.userData?.ikea_dimensions) spec = o.userData.ikea_dimensions; });
+  if (!spec) return fail('No ikea_dimensions found in the GLB extras.');
+  document.getElementById('title').textContent = `${spec.product}: the drawing's numbers on the 3D model`;
+  document.title = `${spec.product} dimensions`;
+  if (spec.source) document.getElementById('src').textContent = 'Sources: ' + spec.source + (spec.fit && spec.fit !== 'none' ? ` · model rescaled (${spec.fit}, ×${spec.scale.map(v => v.toFixed(3)).join(' / ')})` : '') + '.';
+  buildDims(spec.dimensions);
+  buildTable(spec.dimensions);
+}, undefined, e => fail('Could not load ' + FILE + ' — pass ?file=yourfile.glb and open this page through a local server (python -m http.server) in the same folder. ' + (e?.message || '')));
+
+function fail(msg) { const el = document.getElementById('err'); el.style.display = 'flex'; el.textContent = msg; }
+
+const V = a => new THREE.Vector3(...a);
+function lineMat() { return new THREE.LineBasicMaterial({ color: new THREE.Color(css('--dim')), depthTest: false, transparent: true }); }
+function seg(a, b, mat) { const g = new THREE.BufferGeometry().setFromPoints([a, b]); const l = new THREE.Line(g, mat); l.renderOrder = 10; return l; }
+
+function labelText(d) {
+  if (d.type === 'angle') return `${d.spec_deg}° <small>model ≈ ${d.model_deg}°</small>`;
+  const spec = inches ? d.spec_in : `${d.spec_cm} cm`;
+  const model = inches ? `${(d.model_cm / 2.54).toFixed(1)}"` : `${d.model_cm}`;
+  return `${spec} <small>model ${model}</small>`;
+}
+
+function buildDims(dims) {
+  for (const d of dims) {
+    const g = new THREE.Group(), mat = lineMat();
+    let mid;
+    if (d.type === 'angle') {
+      const c = V(d.center), r = 0.09;
+      const a0 = Math.atan2(d.start_dir[1], d.start_dir[2]), a1 = Math.atan2(d.end_dir[1], d.end_dir[2]);
+      const pts = d3range(a0, a1, 40).map(a => c.clone().add(new THREE.Vector3(0, Math.sin(a) * r, Math.cos(a) * r)));
+      g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+      g.add(seg(c, c.clone().add(V(d.start_dir).multiplyScalar(r * 1.5)), mat));
+      g.add(seg(c, c.clone().add(V(d.end_dir).multiplyScalar(r * 1.5)), mat));
+      const am = (a0 + a1) / 2; mid = c.clone().add(new THREE.Vector3(0, Math.sin(am) * r * 1.9, Math.cos(am) * r * 1.9));
+    } else {
+      const a = V(d.from), b = V(d.to);
+      g.add(seg(a, b, mat));
+      // end ticks perpendicular to the line, in the plane that faces outward
+      const dir = b.clone().sub(a).normalize();
+      const perp = Math.abs(dir.y) > 0.9 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 1, 0);
+      const t = perp.multiplyScalar(0.012);
+      for (const p of [a, b]) g.add(seg(p.clone().sub(t), p.clone().add(t), mat));
+      mid = a.clone().lerp(b, d.label_t ?? 0.5);
+    }
+    g.children.forEach(c => { c.renderOrder = 10; });
+    const el = document.createElement('div'); el.className = 'dim-label'; el.innerHTML = labelText(d);
+    const label = new CSS2DObject(el); label.position.copy(mid); g.add(label);
+    el.addEventListener('mouseenter', () => focus(d.id)); el.addEventListener('mouseleave', () => focus(null));
+    dimGroup.add(g); items.push({ d, g, el, mat });
+  }
+}
+function d3range(a, b, n) { return Array.from({ length: n + 1 }, (_, i) => a + (b - a) * i / n); }
+
+function buildTable(dims) {
+  const tb = document.querySelector('#tbl tbody'); tb.innerHTML = '';
+  for (const d of dims) {
+    const tr = document.createElement('tr'); tr.dataset.id = d.id;
+    const isAngle = d.type === 'angle';
+    const draw = isAngle ? `${d.spec_deg}°` : inches ? d.spec_in : `${d.spec_cm}`;
+    const model = isAngle ? `≈${d.model_deg}°` : inches ? `${(d.model_cm / 2.54).toFixed(1)}"` : `${d.model_cm}`;
+    const diff = isAngle ? `${(d.model_deg - d.spec_deg).toFixed(1)}°` : inches ? `${(d.diff_cm / 2.54).toFixed(1)}"` : `${d.diff_cm > 0 ? '+' : ''}${d.diff_cm}`;
+    const big = isAngle ? Math.abs(d.model_deg - d.spec_deg) >= 2 : Math.abs(d.diff_cm) >= 1;
+    tr.innerHTML = `<td>${d.label}</td><td class="num">${draw}</td><td class="num">${model}</td><td class="num ${big ? 'diff-big' : ''}">${diff}</td>`;
+    tr.onmouseenter = () => focus(d.id); tr.onmouseleave = () => focus(null);
+    tb.appendChild(tr);
+  }
+  document.querySelector('#tbl thead th:nth-child(2)').textContent = inches ? 'Drawing' : 'Drawing (cm)';
+}
+
+function focus(id) {
+  for (const it of items) {
+    const on = !id || it.d.id === id;
+    it.mat.opacity = on ? 1 : 0.12; it.el.classList.toggle('dimmed', !on);
+  }
+  document.querySelectorAll('#tbl tr[data-id]').forEach(tr => tr.classList.toggle('active', tr.dataset.id === id));
+}
+
+document.getElementById('tDims').onclick = e => { dimsOn = !dimsOn; dimGroup.visible = dimsOn; e.target.setAttribute('aria-pressed', dimsOn); };
+document.getElementById('tUnits').onclick = e => {
+  inches = !inches; e.target.setAttribute('aria-pressed', inches);
+  items.forEach(it => it.el.innerHTML = labelText(it.d));
+  buildTable(items.map(i => i.d));
+};
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => items.forEach(it => it.mat.color.set(css('--dim'))));
+
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h); labels.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage); resize();
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); labels.render(scene, camera); });
+window.__ready = () => items.length;
+</script>
+</body>
+</html>

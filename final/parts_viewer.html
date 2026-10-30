@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Parts</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f4f3f0; --panel: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #7a7974; --rule: #e2e1dc;
+    --seat: #2a78d6; --backrest: #1baf7a; --base: #9a9893; --hardware: #eb6834; --accent: #2a78d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #121211; --panel: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #8f8e88; --rule: #33332f;
+      --seat: #3987e5; --backrest: #199e70; --base: #6f6e69; --hardware: #d95926; --accent: #6da7ec;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #121211; --panel: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #8f8e88; --rule: #33332f;
+    --seat: #3987e5; --backrest: #199e70; --base: #6f6e69; --hardware: #d95926; --accent: #6da7ec;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }
+  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  h1 { font-size: 26px; margin: 0 0 6px; font-weight: 650; }
+  .subtitle { color: var(--ink-2); margin: 0 0 18px; max-width: 780px; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; }
+  #stage { position: relative; height: 640px; overflow: hidden; }
+  @media (max-width: 860px) { #stage { height: 460px; } }
+  .controls { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 2; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--ink-2); }
+  .controls button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 4px 9px; cursor: pointer; }
+  .controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  .controls label { display: flex; gap: 6px; align-items: center; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 3px 9px; }
+  #tip { position: absolute; pointer-events: none; z-index: 3; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 6px 9px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.12); opacity: 0; }
+  #tip .muted { color: var(--muted); }
+  .side { padding: 14px 16px; max-height: 640px; overflow: auto; }
+  .side h2 { font-size: 14px; margin: 0 0 2px; }
+  .side > p { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+  .grp { margin-top: 12px; }
+  .grp-h { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13px; cursor: pointer; padding: 3px 0; }
+  .grp-h .n { margin-left: auto; font-weight: 400; color: var(--muted); font-size: 12px; }
+  .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .part { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--ink-2); padding: 3px 4px 3px 18px; border-radius: 6px; cursor: pointer; }
+  .part span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .part:hover, .part.active { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--ink); }
+  .note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .source { font-size: 12px; color: var(--muted); margin-top: 14px; }
+  input[type=range] { accent-color: var(--accent); }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">IKEA web 3D model, taken apart</p>
+  <h1 id="title">Part by part</h1>
+  <p class="subtitle">IKEA ships its web models as a single merged mesh. Splitting it wherever the geometry is physically disconnected (split_parts.py) recovers the separate parts<span id="count"></span>, including hardware hidden inside. Pull the slider to explode the chair; hover or click a part to identify it.</p>
+
+  <div class="layout">
+    <div class="card" id="stage">
+      <div class="controls">
+        <label>Explode <input id="explode" type="range" min="0" max="1" step="0.01" value="0.6"></label>
+        <button id="play">Assemble ▶</button>
+        <button id="tColor" aria-pressed="true">Color by group</button>
+        <button id="tHw" aria-pressed="false">Hardware only</button>
+      </div>
+      <div id="tip"></div>
+    </div>
+    <div class="card side">
+      <h2>Parts</h2>
+      <p>Grouped by role. Numbers are the part's bounding size in cm (W × H × D).</p>
+      <div id="list"></div>
+      <p class="note">Parts are found by geometry, not from IKEA's parts list: any piece not connected to another becomes a part. Names follow its size and position ("left/right" as seen from the front). Glued or merged pieces would stay together.</p>
+    </div>
+  </div>
+  <p class="source">Source: IKEA web 3D model from ikea.com<span id="srcfile"></span>. Model © IKEA; used for non-commercial coursework. Parts split with split_parts.py. Visualization: Hebin Rachel Shin.</p>
+</main>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+const stage = document.getElementById('stage');
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+// Named groups (from a names.json) and the automatic groups from split_parts.py.
+// Only three hues stay distinguishable for everyone, so structure/frame groups share neutral gray.
+const GROUPS = [['Seat', '--seat'], ['Backrest', '--backrest'], ['Base', '--base'], ['Hardware', '--hardware'],
+  ['Panel', '--seat'], ['Post', '--backrest'], ['Body', '--base'], ['Leg', '--base'], ['Rail', '--base']];
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 0.01, 20);
+camera.position.set(1.85, 1.35, 2.45);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.56, 0); controls.enableDamping = true; controls.update();
+scene.add(new THREE.HemisphereLight(0xffffff, 0x77756f, 2.4));
+const sun = new THREE.DirectionalLight(0xffffff, 1.8); sun.position.set(1.5, 2.5, 2); scene.add(sun);
+
+// Explode offsets (meters) per part, by name. Directions follow how each part is assembled.
+function explodeVector(name, rest) {
+  const sx = Math.sign(rest.x) || 1, out = new THREE.Vector3(rest.x, 0, rest.z).normalize();
+  if (name === 'Seat') return new THREE.Vector3(0, 0.16, 0);
+  if (name === 'Back bow') return new THREE.Vector3(0, 0.42, -0.06);
+  if (name.startsWith('Spindle')) return new THREE.Vector3(0, 0.30, -0.04);
+  if (name.startsWith('Leg')) return out.multiplyScalar(0.16).add(new THREE.Vector3(0, -0.04, 0));
+  if (name.startsWith('Seat rail')) return new THREE.Vector3(sx * 0.02, 0.07, 0);
+  if (name.startsWith('Side stretcher')) return new THREE.Vector3(sx * 0.10, -0.02, 0);
+  if (name === 'Cross stretcher') return new THREE.Vector3(0, -0.06, 0.06);
+  if (name.startsWith('Stretcher bolt')) return new THREE.Vector3(sx * 0.28, -0.02, 0);
+  if (name.startsWith('Bolt nut')) return new THREE.Vector3(sx * 0.02, -0.12, 0.06);
+  if (name.startsWith('Seat screw')) return new THREE.Vector3(0, -0.10, 0);
+  if (name.startsWith('Pin')) return new THREE.Vector3(sx * 0.04, 0.10, 0);
+  // generic names from split_parts.py
+  if (name.startsWith('Panel horizontal')) return new THREE.Vector3(0, 0.16, 0);
+  if (name.startsWith('Panel vertical') || name.startsWith('Post')) return new THREE.Vector3(0, 0.30, -0.05);
+  if (/^(Bolt|Screw|Nut)/.test(name)) return new THREE.Vector3(sx * 0.12, -0.08, 0);
+  if (name.startsWith('Rail')) return out.multiplyScalar(0.08).add(new THREE.Vector3(0, 0.04, 0));
+  // anything else: push away from the model's centre
+  const away = rest.clone().sub(new THREE.Vector3(0, 0.42, 0));
+  return away.lengthSq() > 1e-6 ? away.normalize().multiplyScalar(0.15) : new THREE.Vector3(0, -0.1, 0);
+}
+
+const parts = [];   // {name, group, obj, rest, dir, size, tris, mats}
+let colorOn = true, hwOnly = false, active = null, hovered = null;
+
+const FILE = new URLSearchParams(location.search).get('file') || '50544867-mini_parts.glb';
+const loader = new GLTFLoader();
+const draco = new DRACOLoader();
+draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/gltf/');
+loader.setDRACOLoader(draco);
+loader.load(FILE, gltf => {
+  scene.add(gltf.scene);
+  gltf.scene.updateMatrixWorld(true);
+  gltf.scene.traverse(o => {
+    if (!o.isMesh) return;
+    const node = o.parent?.userData?.part ? o.parent : o;   // the node carrying the extras
+    const ud = node.userData;
+    if (!ud.part) return;
+    const box = new THREE.Box3().setFromObject(o), size = box.getSize(new THREE.Vector3());
+    const sources = Array.isArray(o.material) ? o.material : [o.material];
+    const orig = sources.map(m => m.clone());
+    o.material = orig.length === 1 ? orig[0] : orig;
+    const tint = new THREE.MeshStandardMaterial({ roughness: .6, metalness: 0 });
+    parts.push({ name: ud.part, group: ud.group, obj: node, mesh: o, rest: node.position.clone(),
+      dir: explodeVector(ud.part, node.position), size, tris: ud.triangles, orig, tint });
+  });
+  const root = gltf.scene.children[0];
+  if (root) { document.getElementById('title').textContent = `${root.name}, part by part`; document.getElementById('count').textContent = ` (${parts.length})`; if (root.userData.source) document.getElementById('srcfile').textContent = ` (${root.userData.source})`; }
+  if (!parts.length) {
+    showError('This GLB has no split parts. Run split_parts.py and open the *_parts.glb it writes.');
+    return;
+  }
+  buildList(); applyStyle(); setExplode(+document.getElementById('explode').value);
+}, undefined, e => showError('Could not load ' + FILE + '. Open this page through a local server (python -m http.server) in the same folder. ' + (e?.message || '')));
+
+function showError(msg) {
+  const el = document.createElement('p');
+  el.style.cssText = 'position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--ink-2)';
+  el.textContent = msg;
+  stage.appendChild(el);
+}
+
+function setExplode(t) { for (const p of parts) p.obj.position.copy(p.rest).addScaledVector(p.dir, t); }
+const slider = document.getElementById('explode');
+slider.oninput = () => setExplode(+slider.value);
+
+let anim = null;
+document.getElementById('play').onclick = () => {
+  const from = +slider.value, to = from > 0.5 ? 0 : 1, t0 = performance.now(), dur = 1400;
+  document.getElementById('play').textContent = to ? 'Assemble ▶' : 'Explode ▶';
+  cancelAnimationFrame(anim);
+  const step = now => {
+    const k = Math.min(1, (now - t0) / dur), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+    slider.value = from + (to - from) * e; setExplode(+slider.value);
+    if (k < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+};
+
+function groupColor(g) { const v = GROUPS.find(x => x[0] === g); return css(v ? v[1] : '--base'); }
+function applyStyle() {
+  for (const p of parts) {
+    p.tint.color.set(groupColor(p.group));
+    p.mesh.material = colorOn ? p.tint : (p.orig.length === 1 ? p.orig[0] : p.orig);
+    const dim = (hwOnly && p.group !== 'Hardware') || (active && active !== p.name && active !== '#' + p.group);
+    for (const m of [p.tint, ...p.orig]) {
+      if (m.transparent !== dim) { m.transparent = dim; m.needsUpdate = true; }
+      m.opacity = dim ? 0.12 : 1; m.depthWrite = !dim;
+    }
+    const hi = hovered === p.name || active === p.name;
+    p.tint.emissive.set(hi ? 0x333333 : 0x000000);
+  }
+  document.querySelectorAll('.part').forEach(el => el.classList.toggle('active', el.dataset.name === active));
+}
+document.getElementById('tColor').onclick = e => { colorOn = !colorOn; e.target.setAttribute('aria-pressed', colorOn); applyStyle(); };
+document.getElementById('tHw').onclick = e => { hwOnly = !hwOnly; e.target.setAttribute('aria-pressed', hwOnly); applyStyle(); };
+
+function buildList() {
+  const list = document.getElementById('list'); list.innerHTML = '';
+  const extra = [...new Set(parts.map(p => p.group))].filter(g => !GROUPS.some(x => x[0] === g)).map(g => [g, '--base']);
+  for (const [g, v] of [...GROUPS, ...extra]) {
+    const ps = parts.filter(p => p.group === g).sort((a, b) => a.name.localeCompare(b.name, 'en', { numeric: true }));
+    if (!ps.length) continue;
+    const box = document.createElement('div'); box.className = 'grp';
+    box.innerHTML = `<div class="grp-h" data-group="${g}"><span class="sw" style="background:var(${v})"></span>${g}<span class="n">${ps.length} part${ps.length > 1 ? 's' : ''}</span></div>`;
+    for (const p of ps) {
+      const s = p.size, f = x => (x * 100).toFixed(1);
+      box.insertAdjacentHTML('beforeend', `<div class="part" data-name="${p.name}"><span>${p.name}</span><span>${f(s.x)} × ${f(s.y)} × ${f(s.z)}</span></div>`);
+    }
+    list.appendChild(box);
+  }
+  list.querySelectorAll('.part').forEach(el => {
+    el.onmouseenter = () => { hovered = el.dataset.name; applyStyle(); };
+    el.onmouseleave = () => { hovered = null; applyStyle(); };
+    el.onclick = () => { active = active === el.dataset.name ? null : el.dataset.name; applyStyle(); };
+  });
+  list.querySelectorAll('.grp-h').forEach(el => el.onclick = () => { const k = '#' + el.dataset.group; active = active === k ? null : k; applyStyle(); });
+}
+
+// hover + click in 3D
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById('tip');
+function pick(e) {
+  const r = renderer.domElement.getBoundingClientRect();
+  mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(mouse, camera);
+  const vis = parts.filter(p => p.mesh.material.opacity > 0.5).map(p => p.mesh);
+  const hit = ray.intersectObjects(vis, false)[0];
+  return hit ? parts.find(p => p.mesh === hit.object) : null;
+}
+renderer.domElement.addEventListener('pointermove', e => {
+  const p = pick(e), name = p?.name ?? null;
+  if (name !== hovered) { hovered = name; applyStyle(); }
+  if (p) {
+    const r = stage.getBoundingClientRect(), s = p.size, f = x => (x * 100).toFixed(1);
+    tip.innerHTML = `<b>${p.name}</b> <span class="muted">${p.group}</span><br>${f(s.x)} × ${f(s.y)} × ${f(s.z)} cm · ${p.tris} triangles`;
+    tip.style.left = Math.min(e.clientX - r.left + 14, r.width - 220) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px'; tip.style.opacity = 1;
+  } else tip.style.opacity = 0;
+});
+renderer.domElement.addEventListener('pointerleave', () => { hovered = null; tip.style.opacity = 0; applyStyle(); });
+renderer.domElement.addEventListener('click', e => { const p = pick(e); active = p && active !== p.name ? p.name : null; applyStyle(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyStyle);
+
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+window.__parts = () => parts.length;
+</script>
+</body>
+</html>
